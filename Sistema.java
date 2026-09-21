@@ -22,10 +22,24 @@ public class Sistema {
     }
 
     public void registrarUsuario(Usuario usuario) {
+        if (usuario == null) {
+            return;
+        }
+
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getCorreo().equals(usuario.getCorreo())) {
+                return;
+            }
+        }
+
         usuarios.add(usuario);
     }
 
     public boolean iniciarSesion(String correo, String contrasena) {
+        if (correo == null || contrasena == null) {
+            return false;
+        }
+
         for (int i = 0; i < usuarios.size(); i++) {
             Usuario usuario = usuarios.get(i);
 
@@ -43,11 +57,22 @@ public class Sistema {
         usuarioActivo = null;
     }
 
+    public Usuario getUsuarioActivo() {
+        return usuarioActivo;
+    }
+
     public void agregarActividad(Actividad actividad) {
-        actividades.add(actividad);
+        if (actividad != null
+                && buscarActividad(actividad.getNombre()) == null) {
+            actividades.add(actividad);
+        }
     }
 
     public Actividad buscarActividad(String nombreActividad) {
+        if (nombreActividad == null) {
+            return null;
+        }
+
         for (int i = 0; i < actividades.size(); i++) {
             Actividad actividad = actividades.get(i);
 
@@ -73,11 +98,18 @@ public class Sistema {
 
     public boolean aplicarEstudiante(Estudiante estudiante,
                                      Actividad actividad) {
+        if (estudiante == null || actividad == null) {
+            return false;
+        }
         return estudiante.aplicarActividad(actividad);
     }
 
     public boolean registrarAsistenciaQR(String codigoQR,
                                          Actividad actividad) {
+        if (codigoQR == null || actividad == null) {
+            return false;
+        }
+
         Estudiante estudiante = buscarEstudiantePorQR(codigoQR);
 
         if (estudiante == null) {
@@ -95,8 +127,13 @@ public class Sistema {
 
     public void acreditarHoras(Estudiante estudiante,
                                Actividad actividad) {
+        if (estudiante == null || actividad == null) {
+            return;
+        }
+
         int horas = actividad.calcularHorasOtorgadas();
         estudiante.registrarHoras(horas);
+        estudiante.agregarAlHistorial(actividad);
     }
 
     public String getNombreDirectorCarrera() {
@@ -159,6 +196,10 @@ public class Sistema {
     }
 
     public Estudiante buscarEstudiantePorQR(String codigoQR) {
+        if (codigoQR == null) {
+            return null;
+        }
+
         for (int i = 0; i < usuarios.size(); i++) {
             if (usuarios.get(i) instanceof Estudiante) {
                 Estudiante estudiante = (Estudiante) usuarios.get(i);
@@ -174,6 +215,10 @@ public class Sistema {
 
     public boolean validarRegistroDuplicado(Estudiante estudiante,
                                             Actividad actividad) {
+        if (estudiante == null || actividad == null) {
+            return false;
+        }
+
         String registro = estudiante.getCodigoQR()
                 + "-" + actividad.getNombre();
 
@@ -182,15 +227,27 @@ public class Sistema {
 
     public String obtenerEstadisticasOrganizador(
             Organizador organizador) {
-        Actividad[] historial = organizador.getHistorialActividades();
-        int totalHoras = 0;
-
-        for (int i = 0; i < historial.length; i++) {
-            totalHoras = totalHoras
-                    + historial[i].getCantidadHoras();
+        if (organizador == null) {
+            return "Organizador no encontrado";
         }
 
-        return "Actividades creadas: " + historial.length
+        Actividad[] historial = organizador.getHistorialActividades();
+        int totalHoras = 0;
+        int cantidadActividades = 0;
+
+        if (historial == null) {
+            return "Actividades creadas: 0\nTotal de horas: 0";
+        }
+
+        for (int i = 0; i < historial.length; i++) {
+            if (historial[i] != null) {
+                cantidadActividades++;
+                totalHoras = totalHoras
+                        + historial[i].getCantidadHoras();
+            }
+        }
+
+        return "Actividades creadas: " + cantidadActividades
                 + "\nTotal de horas: " + totalHoras;
     }
 
@@ -210,11 +267,22 @@ public class Sistema {
     public ArrayList<Actividad> consultarHistorialEstudiante(
             Estudiante estudiante) {
         ArrayList<Actividad> historial = new ArrayList<Actividad>();
+
+        if (estudiante == null) {
+            return historial;
+        }
+
         Actividad[] actividadesEstudiante =
                 estudiante.getHistorialActividades();
 
+        if (actividadesEstudiante == null) {
+            return historial;
+        }
+
         for (int i = 0; i < actividadesEstudiante.length; i++) {
-            historial.add(actividadesEstudiante[i]);
+            if (actividadesEstudiante[i] != null) {
+                historial.add(actividadesEstudiante[i]);
+            }
         }
 
         return historial;
@@ -222,6 +290,9 @@ public class Sistema {
 
     public double consultarProgresoEstudiante(
             Estudiante estudiante) {
+        if (estudiante == null) {
+            return 0;
+        }
         return estudiante.calcularProgreso();
     }
 }

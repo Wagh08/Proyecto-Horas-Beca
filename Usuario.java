@@ -48,8 +48,8 @@ public class Usuario {
         this.carreraOCargo = carreraOCargo;
     }
 
-    public boolean validarContraseña(String contraseña) {
-        return this.contraseña.equals(contraseña);
+    public boolean validarContrasena(String contrasena) {
+        return this.contraseña.equals(contrasena);
     }
 
     public String mostrarInformacion() {
