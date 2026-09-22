@@ -1,3 +1,9 @@
+import controlador.Controlador;
+import modelo.Estudiante;
+import modelo.Organizador;
+import modelo.Sistema;
+import vista.Vista;
+
 public class Main {
 
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package modelo;
+
 public class Organizador extends Usuario {
 
     private String departamento;

@@ -1,3 +1,5 @@
+package modelo;
+
 public class Usuario {
     private String nombre;
     private String correo;
@@ -59,4 +61,3 @@ public class Usuario {
                 + "\nCarrera o cargo: " + carreraOCargo;
     }
 }
-

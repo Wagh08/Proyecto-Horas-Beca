@@ -1,3 +1,5 @@
+package modelo;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -37,6 +39,9 @@ public class Actividad {
     }
 
     public String getFecha() {
+        if (fecha == null) {
+            return "";
+        }
         return fecha.toString();
     }
 
@@ -45,6 +50,9 @@ public class Actividad {
     }
 
     public String getHoraInicio() {
+        if (horaInicio == null) {
+            return "";
+        }
         return horaInicio.toString();
     }
 
@@ -53,6 +61,9 @@ public class Actividad {
     }
 
     public String getHoraFin() {
+        if (horaFin == null) {
+            return "";
+        }
         return horaFin.toString();
     }
 
@@ -85,8 +96,14 @@ public class Actividad {
     }
 
     public boolean agregarEstudiante(Estudiante estudiante) {
-        if (!verificarDisponibilidad()) {
+        if (estudiante == null || !verificarDisponibilidad()) {
             return false;
+        }
+
+        for (int i = 0; i < estudiantesInscritos.length; i++) {
+            if (estudiantesInscritos[i] == estudiante) {
+                return false;
+            }
         }
 
         for (int i = 0; i < estudiantesInscritos.length; i++) {
@@ -109,11 +126,26 @@ public class Actividad {
     }
 
     public boolean verificarDisponibilidad() {
-        return cuposRestantes > 0 && estado.equals("Abierta");
+        return cuposRestantes > 0 && "Abierta".equals(estado);
     }
 
     public int calcularHorasOtorgadas() {
-        cantidadHoras = horaFin.getHour() - horaInicio.getHour();
+        if (horaInicio == null || horaFin == null) {
+            return 0;
+        }
+
+        int minutosInicio = horaInicio.getHour() * 60
+                + horaInicio.getMinute();
+        int minutosFin = horaFin.getHour() * 60
+                + horaFin.getMinute();
+        int diferencia = minutosFin - minutosInicio;
+
+        if (diferencia <= 0) {
+            cantidadHoras = 0;
+            return cantidadHoras;
+        }
+
+        cantidadHoras = (diferencia + 59) / 60;
         if (horasDobles) {
             cantidadHoras = cantidadHoras * 2;
         }
@@ -144,9 +176,24 @@ public class Actividad {
     }
 
     public void setCupoMaximo(int cupoMaximo) {
+        if (cupoMaximo < 0) {
+            return;
+        }
+
+        Estudiante[] nuevoArreglo = new Estudiante[cupoMaximo];
+        int limite = estudiantesInscritos.length;
+
+        if (cupoMaximo < limite) {
+            limite = cupoMaximo;
+        }
+
+        for (int i = 0; i < limite; i++) {
+            nuevoArreglo[i] = estudiantesInscritos[i];
+        }
+
         this.cupoMaximo = cupoMaximo;
-        estudiantesInscritos = new Estudiante[cupoMaximo];
-        cuposRestantes = cupoMaximo;
+        estudiantesInscritos = nuevoArreglo;
+        calcularCuposRestantes();
     }
 
     public int getCuposRestantes() {
@@ -178,7 +225,12 @@ public class Actividad {
     }
 
     public void setEstudiantesInscritos(Estudiante[] estudiantes) {
-        estudiantesInscritos = estudiantes;
+        if (estudiantes == null) {
+            estudiantesInscritos = new Estudiante[cupoMaximo];
+        } else {
+            estudiantesInscritos = estudiantes;
+            cupoMaximo = estudiantes.length;
+        }
         calcularCuposRestantes();
     }
 

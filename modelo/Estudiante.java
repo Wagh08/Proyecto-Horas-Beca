@@ -1,3 +1,5 @@
+package modelo;
+
 public class Estudiante extends Usuario {
 
     private int horasRequeridas;
@@ -84,10 +86,14 @@ public class Estudiante extends Usuario {
     }
 
     public boolean aplicarActividad(Actividad actividad) {
-        if (cantidadAplicadas < actividadesAplicadas.length) {
+        if (actividad == null
+                || cantidadAplicadas >= actividadesAplicadas.length) {
+            return false;
+        }
+
+        if (actividad.agregarEstudiante(this)) {
             actividadesAplicadas[cantidadAplicadas] = actividad;
             cantidadAplicadas++;
-
             return true;
         }
 

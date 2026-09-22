@@ -1,3 +1,14 @@
+package vista;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import controlador.Controlador;
+import modelo.Actividad;
+import modelo.Estudiante;
+import modelo.Organizador;
+import modelo.Sistema;
+import modelo.Usuario;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,6 +42,9 @@ public class Vista {
                 case 2:
                     mostrarActividades(controlador.consultarActividades());
                     break;
+                case 3:
+                    solicitarRegistro();
+                    break;
                 case 0:
                     programaActivo = false;
                     System.out.println("Programa finalizado.");
@@ -45,6 +59,7 @@ public class Vista {
         System.out.println("\n=== SISTEMA DE HORAS BECA ===");
         System.out.println("1. Iniciar sesión");
         System.out.println("2. Ver oportunidades disponibles");
+        System.out.println("3. Registrarse");
         System.out.println("0. Salir");
     }
 
@@ -155,6 +170,62 @@ public class Vista {
         } else if (usuario instanceof Organizador) {
             mostrarMenuOrganizador();
         }
+    }
+
+    public void solicitarRegistro() {
+        System.out.println("\n=== REGISTRO DE USUARIO ===");
+        System.out.println("1. Estudiante");
+        System.out.println("2. Organizador");
+
+        int tipoUsuario = leerEntero("Seleccione el tipo de usuario: ");
+
+        if (tipoUsuario != 1 && tipoUsuario != 2) {
+            System.out.println("Tipo de usuario inválido.");
+            return;
+        }
+
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Correo: ");
+        String correo = scanner.nextLine();
+        int telefono = leerEntero("Teléfono: ");
+        System.out.print("Contraseña: ");
+        String contrasena = scanner.nextLine();
+
+        if (tipoUsuario == 1) {
+            Estudiante estudiante = new Estudiante();
+            estudiante.setNombre(nombre);
+            estudiante.setCorreo(correo);
+            estudiante.setTelefono(telefono);
+            estudiante.setContraseña(contrasena);
+
+            System.out.print("Carrera: ");
+            estudiante.setCarreraOCargo(scanner.nextLine());
+            estudiante.setCarne(leerEntero("Carné: "));
+            estudiante.setHorasRequeridas(
+                    leerEntero("Horas requeridas al año: "));
+            System.out.print("Ciclo actual: ");
+            estudiante.setCicloProgreso(scanner.nextLine());
+            estudiante.generarQR();
+
+            controlador.registrarUsuario(estudiante);
+        } else {
+            Organizador organizador = new Organizador();
+            organizador.setNombre(nombre);
+            organizador.setCorreo(correo);
+            organizador.setTelefono(telefono);
+            organizador.setContraseña(contrasena);
+
+            System.out.print("Cargo: ");
+            organizador.setCarreraOCargo(scanner.nextLine());
+            System.out.print("Departamento: ");
+            organizador.setDepartamento(scanner.nextLine());
+
+            controlador.registrarUsuario(organizador);
+        }
+
+        System.out.println("Usuario registrado correctamente.");
+        System.out.println("Ahora puede iniciar sesión.");
     }
 
     public void mostrarActividades(ArrayList<Actividad> actividades) {

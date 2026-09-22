@@ -1,4 +1,15 @@
+package controlador;
+
 import java.util.ArrayList;
+import modelo.Actividad;
+import modelo.Estudiante;
+import modelo.Organizador;
+import modelo.Sistema;
+import modelo.Usuario;
+import vista.Vista;
+
+import java.util.ArrayList;
+
 
 public class Controlador {
 
@@ -20,6 +31,10 @@ public class Controlador {
 
     public Usuario getUsuarioActual() {
         return usuarioActual;
+    }
+
+    public void registrarUsuario(Usuario usuario) {
+        sistema.registrarUsuario(usuario);
     }
 
     public boolean iniciarSesion(String correo, String contrasena) {

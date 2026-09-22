@@ -1,3 +1,5 @@
+package modelo;
+
 import java.util.ArrayList;
 
 public class Sistema {
@@ -295,4 +297,4 @@ public class Sistema {
         }
         return estudiante.calcularProgreso();
     }
-}
+} 
