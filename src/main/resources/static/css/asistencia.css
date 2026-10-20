@@ -96,7 +96,9 @@
 }
 
 .accion-asistencia {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     min-height: 48px;
     margin-top: 14px;

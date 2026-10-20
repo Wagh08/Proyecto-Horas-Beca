@@ -24,15 +24,15 @@
         </section>
 
         <form class="formulario-actividad">
-            <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" required></div>
-            <div class="campo"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" required></textarea></div>
-            <div class="campo"><label for="requisitos">Requisitos</label><textarea id="requisitos" name="requisitos"></textarea></div>
-            <div class="campo"><label for="ubicacion">Ubicación</label><input id="ubicacion" name="ubicacion" type="text" required></div>
+            <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" placeholder="Ej. Apoyo en biblioteca" required></div>
+            <div class="campo"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" placeholder="Explica qué harán los estudiantes durante la actividad" required></textarea></div>
+            <div class="campo"><label for="requisitos">Requisitos</label><textarea id="requisitos" name="requisitos" placeholder="Ej. Llevar ropa cómoda; déjalo vacío si no hay requisitos"></textarea></div>
+            <div class="campo"><label for="ubicacion">Ubicación</label><input id="ubicacion" name="ubicacion" type="text" placeholder="Ej. Biblioteca central" required></div>
             <div class="campo"><label for="fecha">Fecha</label><input id="fecha" name="fecha" type="date" required></div>
             <div class="campo"><label for="inicio">Hora de inicio</label><input id="inicio" name="inicio" type="time" required></div>
             <div class="campo"><label for="fin">Hora de finalización</label><input id="fin" name="fin" type="time" required></div>
-            <div class="campo"><label for="cupo">Cupo máximo</label><input id="cupo" name="cupo" type="number" min="1" required></div>
-            <div class="campo"><label for="horas">Horas beca acreditables</label><input id="horas" name="horas" type="number" min="1" required></div>
+            <div class="campo"><label for="cupo">Cupo máximo</label><input id="cupo" name="cupo" type="number" min="1" placeholder="Ej. 8" required></div>
+            <div class="campo"><label for="horas">Horas beca acreditables</label><input id="horas" name="horas" type="number" min="1" placeholder="Ej. 4" required></div>
             <button class="boton-actividad" type="button">Publicar actividad</button>
         </form>
     </main>
