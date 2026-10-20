@@ -1,0 +1,72 @@
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--color-fondo);
+}
+
+.cabecera-app {
+    padding: max(24px, env(safe-area-inset-top)) 24px 28px;
+    background: var(--color-cabecera);
+    color: var(--color-cabecera-texto);
+}
+
+.cabecera-app p {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+}
+
+.cabecera-app h1 {
+    margin: 0;
+    font-size: 1.7rem;
+}
+
+.contenido-app {
+    padding: 24px 20px calc(100px + env(safe-area-inset-bottom));
+}
+
+.navegacion-inferior {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    padding: 8px 8px max(8px, env(safe-area-inset-bottom));
+    background: var(--color-superficie);
+    border-top: 1px solid var(--color-borde);
+}
+
+.navegacion-inferior a {
+    flex: 1;
+    min-width: 0;
+    min-height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--color-texto-secundario);
+    border-radius: var(--radio-control);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.navegacion-inferior svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.navegacion-inferior a[aria-current="page"] {
+    background: var(--color-fondo);
+    color: var(--color-principal);
+}
+
+.navegacion-inferior a:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 2px;
+}
