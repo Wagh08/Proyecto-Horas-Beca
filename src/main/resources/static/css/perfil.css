@@ -1,0 +1,78 @@
+.pagina-perfil {
+    display: grid;
+    gap: 18px;
+}
+
+.pagina-perfil h2 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.tarjeta-perfil {
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.tarjeta-perfil h3 {
+    margin: 0 0 14px;
+    font-size: 1rem;
+}
+
+.dato-perfil {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.dato-perfil:last-child {
+    border-bottom: 0;
+}
+
+.dato-perfil span,
+.dato-perfil strong {
+    display: block;
+}
+
+.dato-perfil span {
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+}
+
+.dato-perfil strong {
+    margin-top: 4px;
+}
+
+.boton-tema {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    border: 0;
+    border-radius: var(--radio-control);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-tema:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 3px;
+}
+
+.ayuda-perfil details {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.ayuda-perfil summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.ayuda-perfil p {
+    margin: 10px 0 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
