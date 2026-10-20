@@ -6,6 +6,7 @@
     <title>Horas Beca</title>
     <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
     <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
 </head>
 <body data-rol="organizador" data-pagina="gestion">
     <header class="cabecera-app">
@@ -13,7 +14,33 @@
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app" id="contenido-pagina"></main>
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+        <section class="introduccion">
+            <h2>Mis actividades</h2>
+            <p>Consulta las actividades que organizas y sus participantes.</p>
+        </section>
+
+        <a class="boton-actividad" href="crear-actividad.html">Crear actividad</a>
+
+        <section class="bloque-actividades" aria-labelledby="titulo-gestion">
+            <h2 id="titulo-gestion">Próximas actividades</h2>
+
+            <article class="tarjeta-actividad">
+                <span class="etiqueta-actividad">6 de 8 cupos ocupados</span>
+                <h3>Apoyo en biblioteca</h3>
+                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre · 9:00 a 11:00</time></p>
+                <p>Biblioteca central</p>
+                <a class="enlace-actividad" href="participantes.html">Ver participantes</a>
+            </article>
+
+            <article class="tarjeta-actividad">
+                <span class="etiqueta-actividad">Solicitudes pendientes</span>
+                <h3>Apoyo semanal en biblioteca</h3>
+                <p>Actividad recurrente · martes, 9:00 a 11:00</p>
+                <a class="enlace-actividad" href="solicitudes.html">Revisar solicitudes</a>
+            </article>
+        </section>
+    </main>
 
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
 

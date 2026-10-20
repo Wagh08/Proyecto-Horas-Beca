@@ -6,6 +6,7 @@
     <title>Horas Beca</title>
     <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
     <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
 </head>
 <body data-rol="estudiante" data-pagina="actividades">
     <header class="cabecera-app">
@@ -13,7 +14,32 @@
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app" id="contenido-pagina"></main>
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+        <section class="introduccion">
+            <h2>Encuentra una actividad</h2>
+            <p>Consulta las oportunidades disponibles y elige la que mejor se adapte a ti.</p>
+        </section>
+
+        <section class="bloque-actividades" aria-labelledby="titulo-disponibles">
+            <h2 id="titulo-disponibles">Disponibles</h2>
+
+            <article class="tarjeta-actividad">
+                <span class="etiqueta-actividad">2 horas beca</span>
+                <h3>Apoyo en biblioteca</h3>
+                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre · 9:00 a 11:00</time></p>
+                <p>Biblioteca central · 2 cupos disponibles</p>
+                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
+            </article>
+
+            <article class="tarjeta-actividad">
+                <span class="etiqueta-actividad">4 horas beca</span>
+                <h3>Jornada de bienvenida</h3>
+                <p><time datetime="2026-10-23T14:00">Viernes 23 de octubre · 14:00 a 16:00</time></p>
+                <p>Edificio principal · 5 cupos disponibles</p>
+                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
+            </article>
+        </section>
+    </main>
 
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
 

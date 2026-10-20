@@ -1,0 +1,160 @@
+.pagina-actividades {
+    display: grid;
+    gap: 20px;
+}
+
+.introduccion h2,
+.bloque-actividades h2 {
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+}
+
+.introduccion p,
+.texto-secundario {
+    margin: 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
+
+.bloque-actividades {
+    display: grid;
+    gap: 12px;
+}
+
+.tarjeta-actividad {
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.tarjeta-actividad h3 {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.tarjeta-actividad p {
+    margin: 7px 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.4;
+}
+
+.etiqueta-actividad {
+    display: inline-block;
+    padding: 5px 10px;
+    background: var(--color-fondo);
+    color: var(--color-principal);
+    border: 1px solid var(--color-borde);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.enlace-actividad {
+    color: var(--color-principal);
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
+
+.tarjeta-actividad .enlace-actividad {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.ficha-datos {
+    display: grid;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.ficha-datos div {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.ficha-datos dt {
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+}
+
+.ficha-datos dd {
+    margin: 4px 0 0;
+    font-weight: 600;
+}
+
+.boton-actividad {
+    display: inline-block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    border: 0;
+    border-radius: var(--radio-control);
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-actividad:focus-visible,
+.enlace-actividad:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 3px;
+}
+
+.formulario-actividad {
+    display: grid;
+    gap: 16px;
+}
+
+.campo {
+    display: grid;
+    gap: 7px;
+}
+
+.campo label {
+    font-weight: 600;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    background: var(--color-superficie);
+    color: var(--color-texto);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-control);
+    font: inherit;
+}
+
+.campo textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.persona {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.persona:last-child {
+    border-bottom: 0;
+}
+
+.persona strong,
+.persona span {
+    display: block;
+}
+
+.persona span {
+    margin-top: 4px;
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+}
