@@ -6,7 +6,7 @@
 - Kembeck López 26636
 - María Chávez 26187
 
-Alicación web diseñada para usarse desde teléfonos. Ayuda a los estudiantes becados a encontrar actividades, registrar su participación y consultar las horas beca acreditadas. También permite a los organizadores publicar actividades y gestionar la asistencia.
+Aplicación web diseñada para usarse desde teléfonos. Ayuda a los estudiantes becados a encontrar actividades, registrar su participación y consultar las horas beca acreditadas. También permite a los organizadores publicar actividades y gestionar la asistencia.
 
 ## Objetivo
 
@@ -53,7 +53,7 @@ La inscripción y la confirmación de llegada no acreditan horas por sí solas. 
 Cada estudiante puede consultar su meta anual, las horas acreditadas, las horas pendientes y el historial de actividades realizadas. La meta depende del porcentaje de beca:
 
 | Porcentaje de beca | Horas anuales |
-| --- | ---: |
+| --- | --- |
 | 1% – 15% | 30 |
 | 16% – 25% | 50 |
 | 26% – 50% | 70 |
