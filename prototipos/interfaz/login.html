@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Inicio de sesión</title>
-
+    <title>Iniciar sesión | Horas Beca</title>
+    <link rel="stylesheet" href="../../src/main/resources/static/css/tema.css">
     <link rel="stylesheet" href="estilos.css">
+    <script src="../../src/main/resources/static/js/tema.js"></script>
 </head>
-
 <body>
-
-    <div class="contenedor-login">
-
+    <header class="encabezado-login">
+        <img
+            class="logo-universidad"
+            src="../../src/main/resources/static/imgs/LogoUVG.png"
+            alt="Universidad del Valle de Guatemala"
+        >
         <h1>Horas Beca</h1>
+    </header>
+
+    <main class="contenedor-login">
         <h2>Iniciar sesión</h2>
+        <p class="descripcion-login">Ingresa con tus datos para continuar.</p>
 
         <form id="formularioLogin">
-
             <label for="correo">Correo electrónico</label>
             <input
                 type="email"
@@ -34,17 +39,11 @@
                 required
             >
 
-            <button type="submit">
-                Iniciar sesión
-            </button>
-
+            <button type="submit">Iniciar sesión</button>
             <p id="mensaje"></p>
-
         </form>
-
-    </div>
+    </main>
 
     <script src="login.js"></script>
-
 </body>
 </html>

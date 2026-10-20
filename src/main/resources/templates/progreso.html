@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/barra-progreso.css" th:href="@{/css/barra-progreso.css}">
+    <link rel="stylesheet" href="../static/css/progreso.css" th:href="@{/css/progreso.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="estudiante" data-pagina="progreso">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-progreso" id="contenido-pagina">
+        <section class="tarjeta-progreso" aria-labelledby="titulo-progreso">
+            <h2 id="titulo-progreso">Tu progreso en 2026</h2>
+            <p class="total">18 de 50 horas</p>
+            <p>Has completado el 36 % de tu meta anual.</p>
+            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" aria-valuemax="50" aria-valuenow="18">
+                <span style="--avance: 36%"></span>
+            </div>
+            <p>¡Sigue participando!</p>
+        </section>
+
+        <section class="cifras-progreso" aria-label="Resumen de horas">
+            <div class="cifra-progreso"><strong>32 h</strong><span>Horas pendientes</span></div>
+            <div class="cifra-progreso"><strong>18 h</strong><span>Horas acreditadas</span></div>
+        </section>
+
+        <section class="historial" aria-labelledby="titulo-historial">
+            <h2 id="titulo-historial">Historial de 2026</h2>
+
+            <article class="registro-historial">
+                <h3>Feria de ciencias</h3>
+                <p><time datetime="2026-10-12">12 de octubre de 2026</time> · Participación acreditada</p>
+                <strong>+10 horas beca</strong>
+            </article>
+
+            <article class="registro-historial">
+                <h3>Apoyo en orientación</h3>
+                <p><time datetime="2026-10-06">6 de octubre de 2026</time> · Participación acreditada</p>
+                <strong>+8 horas beca</strong>
+            </article>
+        </section>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

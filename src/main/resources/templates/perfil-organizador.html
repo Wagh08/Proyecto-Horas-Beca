@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/perfil.css" th:href="@{/css/perfil.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="organizador" data-pagina="perfil">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-perfil" id="contenido-pagina">
+        <h2>Mi perfil</h2>
+
+        <section class="tarjeta-perfil" aria-labelledby="titulo-datos">
+            <h3 id="titulo-datos">Datos del organizador</h3>
+            <div class="dato-perfil"><span>Nombre</span><strong>Daniela Ruiz</strong></div>
+            <div class="dato-perfil"><span>Departamento</span><strong>Biblioteca</strong></div>
+            <div class="dato-perfil"><span>Correo</span><strong>organizacion@example.com</strong></div>
+        </section>
+
+        <section class="tarjeta-perfil" aria-labelledby="titulo-apariencia">
+            <h3 id="titulo-apariencia">Apariencia</h3>
+            <button class="boton-tema" id="boton-tema" type="button" aria-pressed="false">Usar tema oscuro</button>
+        </section>
+
+        <section class="tarjeta-perfil ayuda-perfil" aria-labelledby="titulo-ayuda">
+            <h3 id="titulo-ayuda">Ayuda</h3>
+            <details>
+                <summary>¿Cómo acredito las horas de un estudiante?</summary>
+                <p>Verifica su llegada y valida su QR cuando haya terminado la actividad.</p>
+            </details>
+            <details>
+                <summary>¿Dónde reviso a los participantes?</summary>
+                <p>En Gestión, abre la actividad y entra a su lista de participantes.</p>
+            </details>
+        </section>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

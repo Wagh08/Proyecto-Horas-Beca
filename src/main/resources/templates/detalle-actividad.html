@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="estudiante" data-pagina="actividades">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+        <a class="enlace-actividad" href="actividades.html">Volver a actividades</a>
+
+        <article class="tarjeta-actividad">
+            <span class="etiqueta-actividad">2 horas beca</span>
+            <h2>Apoyo en biblioteca</h2>
+            <p>Ayuda a ordenar materiales y orientar a estudiantes dentro de la biblioteca.</p>
+
+            <dl class="ficha-datos">
+                <div><dt>Fecha</dt><dd>Jueves 22 de octubre de 2026</dd></div>
+                <div><dt>Horario</dt><dd>9:00 a 11:00</dd></div>
+                <div><dt>Ubicación</dt><dd>Biblioteca central</dd></div>
+                <div><dt>Organizador</dt><dd>Equipo de biblioteca</dd></div>
+                <div><dt>Cupos</dt><dd>2 disponibles de 8</dd></div>
+                <div><dt>Horas acreditables</dt><dd>2 horas beca</dd></div>
+                <div><dt>Requisitos</dt><dd>No se requieren conocimientos previos.</dd></div>
+            </dl>
+
+            <a class="boton-actividad" href="asistencia-actividad.html">Ver mi asistencia</a>
+        </article>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

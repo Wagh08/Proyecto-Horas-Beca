@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="estudiante" data-pagina="actividades">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
+        <a class="enlace-actividad" href="asistencia-actividad.html">Volver a mi asistencia</a>
+
+        <section class="panel-asistencia">
+            <h2>QR de asistencia</h2>
+            <p>Apoyo en biblioteca · Jueves 22 de octubre</p>
+
+            <div class="visor-qr">
+                <div>
+                    <strong>QR aún no disponible</strong>
+                    <p>Podrás mostrarlo cuando termine la actividad a las 11:00 y se haya verificado tu llegada.</p>
+                </div>
+            </div>
+
+            <p>Mostrar este QR al organizador permitirá validar tu participación. La inscripción y la confirmación de llegada no acreditan horas.</p>
+        </section>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

@@ -1,0 +1,120 @@
+.pagina-asistencia {
+    display: grid;
+    gap: 18px;
+}
+
+.panel-asistencia {
+    padding: 20px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.panel-asistencia h2,
+.panel-asistencia h3 {
+    margin: 0 0 10px;
+}
+
+.panel-asistencia p {
+    margin: 8px 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
+
+.paso-asistencia {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.paso-asistencia:last-child {
+    border-bottom: 0;
+}
+
+.marca-paso {
+    flex: 0 0 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    background: var(--color-fondo);
+    color: var(--color-principal);
+    border: 1px solid var(--color-borde);
+    border-radius: 50%;
+    font-weight: 700;
+}
+
+.paso-asistencia strong,
+.paso-asistencia small {
+    display: block;
+}
+
+.paso-asistencia small {
+    margin-top: 4px;
+    color: var(--color-texto-secundario);
+    line-height: 1.4;
+}
+
+.visor-qr,
+.visor-camara {
+    min-height: 230px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--color-fondo);
+    border: 2px solid var(--color-borde);
+    border-radius: var(--radio-control);
+    color: var(--color-texto-secundario);
+    text-align: center;
+}
+
+.visor-qr strong,
+.visor-camara strong {
+    display: block;
+    color: var(--color-texto);
+    font-size: 1.1rem;
+}
+
+.fila-persona {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.fila-persona:last-child {
+    border-bottom: 0;
+}
+
+.fila-persona strong,
+.fila-persona span {
+    display: block;
+}
+
+.fila-persona span {
+    margin-top: 5px;
+    color: var(--color-texto-secundario);
+}
+
+.accion-asistencia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    border: 0;
+    border-radius: var(--radio-control);
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.accion-asistencia:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 3px;
+}

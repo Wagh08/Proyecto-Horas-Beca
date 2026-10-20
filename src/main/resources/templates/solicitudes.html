@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="organizador" data-pagina="gestion">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+        <a class="enlace-actividad" href="gestion.html">Volver a gestión</a>
+
+        <section class="introduccion">
+            <h2>Solicitudes</h2>
+            <p>Apoyo semanal en biblioteca · 2 plazas disponibles</p>
+        </section>
+
+        <section class="bloque-actividades" aria-labelledby="titulo-solicitudes">
+            <h2 id="titulo-solicitudes">Pendientes de revisión</h2>
+
+            <article class="tarjeta-actividad">
+                <span class="etiqueta-actividad">Pendiente</span>
+                <h3>Andrea López</h3>
+                <p>Estudiante · carné 12345</p>
+                <p>Registro anual: sin cancelaciones tardías ni ausencias.</p>
+                <button class="boton-actividad" type="button">Revisar solicitud</button>
+            </article>
+        </section>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

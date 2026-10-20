@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="estudiante" data-pagina="actividades">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
+        <a class="enlace-actividad" href="detalle-actividad.html">Volver a la actividad</a>
+
+        <section class="panel-asistencia">
+            <h2>Apoyo en biblioteca</h2>
+            <p>Jueves 22 de octubre · 9:00 a 11:00</p>
+            <p>Biblioteca central · Tu inscripción está confirmada.</p>
+        </section>
+
+        <section class="panel-asistencia" aria-labelledby="titulo-estado">
+            <h3 id="titulo-estado">Tu asistencia</h3>
+
+            <div class="paso-asistencia">
+                <span class="marca-paso" aria-hidden="true">✓</span>
+                <div><strong>Inscripción confirmada</strong><small>Tienes un lugar en esta actividad.</small></div>
+            </div>
+
+            <div class="paso-asistencia">
+                <span class="marca-paso" aria-hidden="true">2</span>
+                <div><strong>Confirmar llegada</strong><small>Hazlo cuando estés en el lugar de la actividad.</small></div>
+            </div>
+
+            <div class="paso-asistencia">
+                <span class="marca-paso" aria-hidden="true">3</span>
+                <div><strong>Verificación del organizador</strong><small>El organizador confirmará que llegaste.</small></div>
+            </div>
+
+            <div class="paso-asistencia">
+                <span class="marca-paso" aria-hidden="true">4</span>
+                <div><strong>QR al finalizar</strong><small>Estará disponible al terminar el horario.</small></div>
+            </div>
+
+            <button class="accion-asistencia" type="button">Confirmar asistencia</button>
+        </section>
+
+        <a class="enlace-actividad" href="qr-actividad.html">Consultar pantalla del QR</a>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

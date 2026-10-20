@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="organizador" data-pagina="gestion">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+    <a class="enlace-actividad" href="gestion.html">Volver a gestión</a>
+
+    <section class="introduccion">
+        <h2>Apoyo en biblioteca</h2>
+        <p>Participantes inscritos · 6 de 8 cupos ocupados</p>
+    </section>
+
+    <section class="tarjeta-actividad" aria-labelledby="titulo-participantes">
+        <h3 id="titulo-participantes">Participantes</h3>
+        <div class="persona"><div><strong>Andrea López</strong><span>Carné 12345</span></div><span>Inscrita</span></div>
+        <div class="persona"><div><strong>Carlos Pérez</strong><span>Carné 12346</span></div><span>Inscrito</span></div>
+        <div class="persona"><div><strong>María Gómez</strong><span>Carné 12347</span></div><span>Inscrita</span></div>
+    </section>
+    <a class="accion-asistencia" href="verificar-llegadas.html">Ver llegadas</a>
+</main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>

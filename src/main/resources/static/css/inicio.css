@@ -1,0 +1,113 @@
+.inicio {
+    display: grid;
+    gap: 22px;
+}
+
+.saludo h2,
+.seccion-inicio h2 {
+    margin: 0 0 6px;
+    font-size: 1.25rem;
+}
+
+.saludo p,
+.seccion-inicio > p {
+    margin: 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
+
+.resumen-inicio {
+    padding: 22px;
+    background: var(--color-cabecera);
+    color: var(--color-cabecera-texto);
+    border-radius: var(--radio-tarjeta);
+}
+
+.resumen-inicio p {
+    margin: 0;
+}
+
+.resumen-inicio .cifra {
+    margin: 12px 0 4px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.resumen-inicio .detalle {
+    line-height: 1.4;
+}
+
+.resumen-inicio a {
+    display: inline-block;
+    margin-top: 16px;
+    color: #ffffff;
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
+
+.seccion-inicio {
+    display: grid;
+    gap: 12px;
+}
+
+.tarjeta-inicio {
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.tarjeta-inicio h3 {
+    margin: 8px 0;
+    font-size: 1.05rem;
+}
+
+.tarjeta-inicio p {
+    margin: 6px 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.4;
+}
+
+.tarjeta-inicio a {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--color-principal);
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
+
+.etiqueta {
+    display: inline-block;
+    padding: 5px 9px;
+    background: var(--color-fondo);
+    color: var(--color-principal);
+    border: 1px solid var(--color-borde);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.indicador {
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.indicador strong {
+    display: block;
+    color: var(--color-principal);
+    font-size: 1.8rem;
+}
+
+.indicador span {
+    color: var(--color-texto-secundario);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}

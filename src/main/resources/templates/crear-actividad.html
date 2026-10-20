@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horas Beca</title>
+    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
+    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
+    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+</head>
+<body data-rol="organizador" data-pagina="gestion">
+    <header class="cabecera-app">
+        <p>Horas Beca</p>
+        <h1 id="titulo-pagina"></h1>
+    </header>
+
+    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+        <a class="enlace-actividad" href="gestion.html">Volver a gestión</a>
+
+        <section class="introduccion">
+            <h2>Crear actividad</h2>
+            <p>Indica los datos que verán los estudiantes.</p>
+        </section>
+
+        <form class="formulario-actividad">
+            <div class="campo"><label for="nombre">Nombre</label><input id="nombre" name="nombre" type="text" placeholder="Ej. Apoyo en biblioteca" required></div>
+            <div class="campo"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" placeholder="Explica qué harán los estudiantes durante la actividad" required></textarea></div>
+            <div class="campo"><label for="requisitos">Requisitos</label><textarea id="requisitos" name="requisitos" placeholder="Ej. Llevar ropa cómoda; déjalo vacío si no hay requisitos"></textarea></div>
+            <div class="campo"><label for="ubicacion">Ubicación</label><input id="ubicacion" name="ubicacion" type="text" placeholder="Ej. Biblioteca central" required></div>
+            <div class="campo"><label for="fecha">Fecha</label><input id="fecha" name="fecha" type="date" required></div>
+            <div class="campo"><label for="inicio">Hora de inicio</label><input id="inicio" name="inicio" type="time" required></div>
+            <div class="campo"><label for="fin">Hora de finalización</label><input id="fin" name="fin" type="time" required></div>
+            <div class="campo"><label for="cupo">Cupo máximo</label><input id="cupo" name="cupo" type="number" min="1" placeholder="Ej. 8" required></div>
+            <div class="campo"><label for="horas">Horas beca acreditables</label><input id="horas" name="horas" type="number" min="1" placeholder="Ej. 4" required></div>
+            <button class="boton-actividad" type="button">Publicar actividad</button>
+        </form>
+    </main>
+
+    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+</body>
+</html>
