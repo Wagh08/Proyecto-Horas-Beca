@@ -54,11 +54,11 @@ Cada estudiante puede consultar su meta anual, las horas acreditadas, las horas 
 
 | Porcentaje de beca | Horas anuales |
 | --- | ---: |
-| 1 %–15 % | 30 |
-| 16 %–25 % | 50 |
-| 26 %–50 % | 70 |
-| 51 %–75 % | 80 |
-| 76 %–100 % | 100 |
+| 1% – 15% | 30 |
+| 16% – 25% | 50 |
+| 26% – 50% | 70 |
+| 51% – 75% | 80 |
+| 76% – 100% | 100 |
 
 El período anual comienza el 1 de enero. El historial de años anteriores se conserva para consulta y las horas que excedan la meta se consideran para el año siguiente.
 
