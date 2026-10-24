@@ -23,21 +23,14 @@
 
         <section class="bloque-actividades" aria-labelledby="titulo-disponibles">
             <h2 id="titulo-disponibles">Disponibles</h2>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">2 horas beca</span>
-                <h3>Apoyo en biblioteca</h3>
-                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre · 9:00 a 11:00</time></p>
-                <p>Biblioteca central · 2 cupos disponibles</p>
-                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
-            </article>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">4 horas beca</span>
-                <h3>Jornada de bienvenida</h3>
-                <p><time datetime="2026-10-23T14:00">Viernes 23 de octubre · 14:00 a 16:00</time></p>
-                <p>Edificio principal · 5 cupos disponibles</p>
-                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
+            <p class="texto-secundario" th:if="${#lists.isEmpty(actividades)}">No hay actividades disponibles por el momento.</p>
+            <article class="tarjeta-actividad" th:each="actividad : ${actividades}">
+                <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca|">Horas beca</span>
+                <h3 th:text="${actividad.nombre}">Nombre de la actividad</h3>
+                <p><time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">Fecha y horario</time></p>
+                <p th:text="${actividad.ubicacion}">Ubicación</p>
+                <p th:text="|Cupo máximo: ${actividad.cupoMaximo}|">Cupo máximo</p>
+                <a class="enlace-actividad" th:href="@{/detalle-actividad.html(id=${actividad.id})}">Ver detalles</a>
             </article>
         </section>
     </main>

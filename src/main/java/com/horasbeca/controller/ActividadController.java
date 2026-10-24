@@ -44,4 +44,10 @@ public class ActividadController {
         modelo.addAttribute("actividades", actividadRepository.listarPropias(autenticacion.getName()));
         return "gestion";
     }
+
+    @GetMapping("/actividades.html")
+    public String actividades(Model modelo) {
+        modelo.addAttribute("actividades", actividadRepository.listarDisponibles());
+        return "actividades";
+    }
 }

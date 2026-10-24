@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Repository
 public class ActividadRepository {
@@ -33,6 +35,16 @@ public class ActividadRepository {
             this::mapear,
             correoOrganizador
         );
+    }
+
+    public List<Actividad> listarDisponibles() {
+    LocalDateTime ahora = LocalDateTime.now(ZoneId.of("America/Guatemala"));
+
+    return jdbcTemplate.query(
+        CONSULTA + " WHERE (a.fecha > ? OR (a.fecha = ? AND a.hora_inicio > ?)) ORDER BY a.fecha, a.hora_inicio, a.id",
+        this::mapear,
+        ahora.toLocalDate().toString(), ahora.toLocalDate().toString(), ahora.toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+    );
     }
 
     private Actividad mapear(ResultSet resultado, int fila) throws SQLException {
