@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS perfiles_estudiantes (
     nombre TEXT NOT NULL,
     carne TEXT NOT NULL UNIQUE,
     ciclo_academico INTEGER NOT NULL CHECK (ciclo_academico >= 1),
-    porcentaje_beca INTEGER NOT NULL CHECK (porcentaje_beca BETWEEN 0 AND 100),
+    porcentaje_beca INTEGER NOT NULL CHECK (porcentaje_beca BETWEEN 1 AND 100),
     telefono TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
