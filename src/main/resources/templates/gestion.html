@@ -24,27 +24,20 @@
         <a class="boton-actividad" href="crear-actividad.html">Crear actividad</a>
 
         <section class="bloque-actividades" aria-labelledby="titulo-gestion">
-            <h2 id="titulo-gestion">Próximas actividades</h2>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">6 de 8 cupos ocupados</span>
-                <h3>Apoyo en biblioteca</h3>
-                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre · 9:00 a 11:00</time></p>
-                <p>Biblioteca central</p>
-                <a class="enlace-actividad" href="participantes.html">Ver participantes</a>
-            </article>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">Solicitudes pendientes</span>
-                <h3>Apoyo semanal en biblioteca</h3>
-                <p>Actividad recurrente · martes, 9:00 a 11:00</p>
-                <a class="enlace-actividad" href="solicitudes.html">Revisar solicitudes</a>
+            <h2 id="titulo-gestion">Mis actividades</h2>
+            <p class="mensaje-actividad mensaje-actividad--exito" th:if="${param.publicada}" role="status">Actividad publicada correctamente.</p>
+            <p class="texto-secundario" th:if="${#lists.isEmpty(actividades)}">Aún no has publicado actividades.</p>
+            <article class="tarjeta-actividad" th:each="actividad : ${actividades}">
+                <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca acreditables|">Horas beca</span>
+                <h3 th:text="${actividad.nombre}">Nombre de la actividad</h3>
+                <p><time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">Fecha y horario</time></p>
+                <p th:text="${actividad.ubicacion}">Ubicación</p>
+                <p th:text="|Cupo máximo: ${actividad.cupoMaximo}|">Cupo máximo</p>
             </article>
         </section>
     </main>
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
-
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+<nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+<script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
 </body>
 </html>
