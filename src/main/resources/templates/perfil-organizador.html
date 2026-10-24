@@ -20,9 +20,10 @@
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-datos">
             <h3 id="titulo-datos">Datos del organizador</h3>
-            <div class="dato-perfil"><span>Nombre</span><strong>Daniela Ruiz</strong></div>
-            <div class="dato-perfil"><span>Departamento</span><strong>Biblioteca</strong></div>
-            <div class="dato-perfil"><span>Correo</span><strong>organizacion@example.com</strong></div>
+            <div class="dato-perfil"><span>Nombre</span><strong th:text="${perfil.nombre}">Daniela Ruiz</strong></div>
+            <div class="dato-perfil"><span>Departamento</span><strong th:text="${perfil.departamento}">Biblioteca</strong></div>
+            <div class="dato-perfil"><span>Correo</span><strong th:text="${perfil.correo}">organizacion@example.com</strong></div>
+            <div class="dato-perfil"><span>Teléfono</span><strong th:text="${perfil.telefono != null ? perfil.telefono : 'No registrado'}">No registrado</strong></div>
         </section>
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-apariencia">

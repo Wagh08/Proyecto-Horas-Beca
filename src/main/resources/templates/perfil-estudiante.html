@@ -20,12 +20,13 @@
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-datos">
             <h3 id="titulo-datos">Datos personales</h3>
-            <div class="dato-perfil"><span>Nombre</span><strong>Andrea López</strong></div>
-            <div class="dato-perfil"><span>Correo</span><strong>andrea@example.com</strong></div>
-            <div class="dato-perfil"><span>Carné</span><strong>12345</strong></div>
-            <div class="dato-perfil"><span>Ciclo académico</span><strong>3.º ciclo</strong></div>
-            <div class="dato-perfil"><span>Porcentaje de beca</span><strong>20 %</strong></div>
-            <div class="dato-perfil"><span>Meta anual</span><strong>50 horas beca</strong></div>
+            <div class="dato-perfil"><span>Nombre</span><strong th:text="${perfil.nombre}">Andrea López</strong></div>
+            <div class="dato-perfil"><span>Correo</span><strong th:text="${perfil.correo}">andrea@example.com</strong></div>
+            <div class="dato-perfil"><span>Carné</span><strong th:text="${perfil.carne}">12345</strong></div>
+            <div class="dato-perfil"><span>Ciclo académico</span><strong th:text="|${perfil.cicloAcademico}.º ciclo|">3.º ciclo</strong></div>
+            <div class="dato-perfil"><span>Porcentaje de beca</span><strong th:text="|${perfil.porcentajeBeca} %|">20 %</strong></div>
+            <div class="dato-perfil"><span>Meta anual</span><strong th:text="|${metaAnual} horas beca|">50 horas beca</strong></div>
+            <div class="dato-perfil"><span>Teléfono</span><strong th:text="${perfil.telefono != null ? perfil.telefono : 'No registrado'}">No registrado</strong></div>
         </section>
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-apariencia">
