@@ -46,6 +46,16 @@ public class ActividadRepository {
         ahora.toLocalDate().toString(), ahora.toLocalDate().toString(), ahora.toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
     );
     }
+    
+    public java.util.Optional<Actividad> buscarDisponiblePorId(long id) {
+    LocalDateTime ahora = LocalDateTime.now(ZoneId.of("America/Guatemala"));
+
+    return jdbcTemplate.query(
+        CONSULTA + " WHERE a.id = ? AND (a.fecha > ? OR (a.fecha = ? AND a.hora_inicio > ?))",
+        this::mapear,
+        id, ahora.toLocalDate().toString(), ahora.toLocalDate().toString(), ahora.toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+    ).stream().findFirst();
+    }
 
     private Actividad mapear(ResultSet resultado, int fila) throws SQLException {
         return new Actividad(

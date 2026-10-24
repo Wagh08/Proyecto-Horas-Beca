@@ -19,21 +19,18 @@
         <a class="enlace-actividad" href="actividades.html">Volver a actividades</a>
 
         <article class="tarjeta-actividad">
-            <span class="etiqueta-actividad">2 horas beca</span>
-            <h2>Apoyo en biblioteca</h2>
-            <p>Ayuda a ordenar materiales y orientar a estudiantes dentro de la biblioteca.</p>
-
+            <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca|">Horas beca</span>
+            <h2 th:text="${actividad.nombre}">Nombre de la actividad</h2>
+            <p th:text="${actividad.descripcion}">Descripción</p>
             <dl class="ficha-datos">
-                <div><dt>Fecha</dt><dd>Jueves 22 de octubre de 2026</dd></div>
-                <div><dt>Horario</dt><dd>9:00 a 11:00</dd></div>
-                <div><dt>Ubicación</dt><dd>Biblioteca central</dd></div>
-                <div><dt>Organizador</dt><dd>Equipo de biblioteca</dd></div>
-                <div><dt>Cupos</dt><dd>2 disponibles de 8</dd></div>
-                <div><dt>Horas acreditables</dt><dd>2 horas beca</dd></div>
-                <div><dt>Requisitos</dt><dd>No se requieren conocimientos previos.</dd></div>
+                <div><dt>Fecha</dt><dd th:text="${actividad.fechaTexto()}">Fecha</dd></div>
+                <div><dt>Horario</dt><dd th:text="|${actividad.horaInicio} a ${actividad.horaFin}|">Horario</dd></div>
+                <div><dt>Ubicación</dt><dd th:text="${actividad.ubicacion}">Ubicación</dd></div>
+                <div><dt>Organizador</dt><dd th:text="${actividad.organizador}">Organizador</dd></div>
+                <div><dt>Cupo máximo</dt><dd th:text="${actividad.cupoMaximo}">Cupo</dd></div>
+                <div><dt>Horas acreditables</dt><dd th:text="|${actividad.horasAcreditables} horas beca|">Horas</dd></div>
+                <div><dt>Requisitos</dt><dd th:text="${actividad.requisitos != null ? actividad.requisitos : 'Sin requisitos adicionales'}">Requisitos</dd></div>
             </dl>
-
-            <a class="boton-actividad" href="asistencia-actividad.html">Ver mi asistencia</a>
         </article>
     </main>
 

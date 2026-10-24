@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.horasbeca.model.Actividad;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class ActividadController {
@@ -49,5 +52,18 @@ public class ActividadController {
     public String actividades(Model modelo) {
         modelo.addAttribute("actividades", actividadRepository.listarDisponibles());
         return "actividades";
+    }
+
+    @GetMapping("/detalle-actividad.html")
+    public String detalle(@RequestParam(name = "id", required = false) Long id, Model modelo) {
+        if (id == null || id < 1) {
+            return "redirect:/actividades.html";
+        }
+
+        Actividad actividad = actividadRepository.buscarDisponiblePorId(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no disponible"));
+
+        modelo.addAttribute("actividad", actividad);
+        return "detalle-actividad";
     }
 }
