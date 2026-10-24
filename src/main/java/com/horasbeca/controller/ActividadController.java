@@ -49,8 +49,18 @@ public class ActividadController {
     }
 
     @GetMapping("/actividades.html")
-    public String actividades(Model modelo) {
-        modelo.addAttribute("actividades", actividadRepository.listarDisponibles());
+    public String actividades(@RequestParam(name = "fecha", defaultValue = "") String fecha, @RequestParam(name = "turno", defaultValue = "") String turno, @RequestParam(name = "horasMinimas", defaultValue = "") String horasMinimas, Model modelo) {
+        modelo.addAttribute("fecha", fecha);
+        modelo.addAttribute("turno", turno);
+        modelo.addAttribute("horasMinimas", horasMinimas);
+
+        try {
+            modelo.addAttribute("actividades", actividadService.filtrarDisponibles(fecha, turno, horasMinimas));
+        } catch (IllegalArgumentException excepcion) {
+            modelo.addAttribute("errorFiltros", excepcion.getMessage());
+            modelo.addAttribute("actividades", actividadRepository.listarDisponibles());
+        }
+
         return "actividades";
     }
 

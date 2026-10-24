@@ -186,3 +186,12 @@
     background: #096b50;
     color: #ffffff;
 }
+
+.formulario-filtros {
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}

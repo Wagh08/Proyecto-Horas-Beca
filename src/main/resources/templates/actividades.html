@@ -21,6 +21,15 @@
             <p>Consulta las oportunidades disponibles y elige la que mejor se adapte a ti.</p>
         </section>
 
+        <form class="formulario-filtros" th:action="@{/actividades.html}" method="get">
+            <div class="campo"><label for="filtro-fecha">Fecha</label><input id="filtro-fecha" name="fecha" type="date" th:value="${fecha}"></div>
+            <div class="campo"><label for="filtro-turno">Horario de inicio</label><select id="filtro-turno" name="turno"><option value="">Cualquier horario</option><option value="manana" th:selected="${turno == 'manana'}">Mañana, antes de las 12:00</option><option value="tarde" th:selected="${turno == 'tarde'}">Tarde, desde las 12:00</option></select></div>
+            <div class="campo"><label for="filtro-horas">Mínimo de horas beca</label><input id="filtro-horas" name="horasMinimas" type="number" min="1" step="1" th:value="${horasMinimas}" placeholder="Cualquier cantidad"></div>
+            <button class="boton-actividad" type="submit">Aplicar filtros</button>
+            <a class="enlace-actividad" th:href="@{/actividades.html}">Limpiar filtros</a>
+        </form>
+        <p class="mensaje-actividad mensaje-actividad--error" th:if="${errorFiltros}" th:text="${errorFiltros}" role="alert"></p>
+
         <section class="bloque-actividades" aria-labelledby="titulo-disponibles">
             <h2 id="titulo-disponibles">Disponibles</h2>
             <p class="texto-secundario" th:if="${#lists.isEmpty(actividades)}">No hay actividades disponibles por el momento.</p>
