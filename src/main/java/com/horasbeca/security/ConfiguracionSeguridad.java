@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class ConfiguracionSeguridad {
@@ -40,7 +41,10 @@ public class ConfiguracionSeguridad {
                     "/escanear-qr.html",
                     "/perfil-organizador.html"
                 ).hasRole("ORGANIZADOR")
+                .requestMatchers(HttpMethod.POST, "/perfil-estudiante/contacto").hasRole("ESTUDIANTE")
+                .requestMatchers(HttpMethod.POST, "/perfil-organizador/contacto").hasRole("ORGANIZADOR")
                 .anyRequest().denyAll()
+        
             )
             .formLogin(formulario -> formulario
                 .loginPage("/login")

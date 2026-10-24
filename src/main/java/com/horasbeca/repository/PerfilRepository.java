@@ -42,4 +42,22 @@ public class PerfilRepository {
             correo
         ).stream().findFirst();
     }
+
+    public boolean actualizarTelefonoEstudiante(String correo, String telefono) {
+        int filasActualizadas = jdbcTemplate.update(
+            "UPDATE perfiles_estudiantes SET telefono = ? WHERE usuario_id = (SELECT id FROM usuarios WHERE correo = ?)",
+            telefono,
+            correo
+        );
+        return filasActualizadas == 1;
+    }
+
+    public boolean actualizarTelefonoOrganizador(String correo, String telefono) {
+        int filasActualizadas = jdbcTemplate.update(
+            "UPDATE perfiles_organizadores SET telefono = ? WHERE usuario_id = (SELECT id FROM usuarios WHERE correo = ?)",
+            telefono,
+            correo
+        );
+        return filasActualizadas == 1;
+    }
 }

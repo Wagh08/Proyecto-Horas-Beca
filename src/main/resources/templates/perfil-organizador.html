@@ -24,6 +24,13 @@
             <div class="dato-perfil"><span>Departamento</span><strong th:text="${perfil.departamento}">Biblioteca</strong></div>
             <div class="dato-perfil"><span>Correo</span><strong th:text="${perfil.correo}">organizacion@example.com</strong></div>
             <div class="dato-perfil"><span>Teléfono</span><strong th:text="${perfil.telefono != null ? perfil.telefono : 'No registrado'}">No registrado</strong></div>
+            <form class="formulario-contacto" th:action="@{/perfil-organizador/contacto}" method="post">
+                <label for="telefono-organizador">Editar teléfono de contacto</label>
+                <input id="telefono-organizador" name="telefono" type="tel" autocomplete="tel" maxlength="25" th:value="${perfil.telefono}" placeholder="Ingresa tu teléfono">
+                <button class="boton-tema" type="submit">Guardar teléfono</button>
+            </form>
+            <p class="mensaje-contacto" th:if="${param.contactoGuardado}" role="status">Teléfono guardado correctamente.</p>
+            <p class="mensaje-contacto mensaje-contacto--error" th:if="${param.contactoError}" role="alert">El teléfono no puede superar 25 caracteres.</p>
         </section>
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-apariencia">

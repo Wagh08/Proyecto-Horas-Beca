@@ -79,3 +79,37 @@
     color: var(--color-texto-secundario);
     line-height: 1.5;
 }
+
+.formulario-contacto {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.formulario-contacto label {
+    font-weight: 600;
+}
+
+.formulario-contacto input {
+    width: 100%;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+}
+
+.mensaje-contacto {
+    margin: 12px 0 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: #096b50;
+    color: #ffffff;
+}
+
+.mensaje-contacto--error {
+    background: #982b3b;
+}

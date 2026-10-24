@@ -27,6 +27,13 @@
             <div class="dato-perfil"><span>Porcentaje de beca</span><strong th:text="|${perfil.porcentajeBeca} %|">20 %</strong></div>
             <div class="dato-perfil"><span>Meta anual</span><strong th:text="|${metaAnual} horas beca|">50 horas beca</strong></div>
             <div class="dato-perfil"><span>Teléfono</span><strong th:text="${perfil.telefono != null ? perfil.telefono : 'No registrado'}">No registrado</strong></div>
+            <form class="formulario-contacto" th:action="@{/perfil-estudiante/contacto}" method="post">
+                <label for="telefono-estudiante">Editar teléfono de contacto</label>
+                <input id="telefono-estudiante" name="telefono" type="tel" autocomplete="tel" maxlength="25" th:value="${perfil.telefono}" placeholder="Ingresa tu teléfono">
+                <button class="boton-tema" type="submit">Guardar teléfono</button>
+            </form>
+            <p class="mensaje-contacto" th:if="${param.contactoGuardado}" role="status">Teléfono guardado correctamente.</p>
+            <p class="mensaje-contacto mensaje-contacto--error" th:if="${param.contactoError}" role="alert">El teléfono no puede superar 25 caracteres.</p>
         </section>
 
         <section class="tarjeta-perfil" aria-labelledby="titulo-apariencia">
