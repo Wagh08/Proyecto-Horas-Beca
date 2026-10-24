@@ -44,10 +44,16 @@
                 <p>En Progreso encontrarás el historial de actividades y las horas acreditadas.</p>
             </details>
         </section>
+        <section class="tarjeta-perfil" aria-labelledby="titulo-sesion">
+            <h3 id="titulo-sesion">Sesión</h3>
+            <form th:action="@{/logout}" method="post">
+                <button class="boton-tema" type="submit">Cerrar sesión</button>
+            </form>
+        </section>
     </main>
 
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+<script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
 </body>
 </html>

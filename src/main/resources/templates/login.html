@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión | Horas Beca</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+    <script th:src="@{/js/tema.js}"></script>
+</head>
+<body>
+    <header class="encabezado-login">
+        <img class="logo-universidad" th:src="@{/imgs/LogoUVG.png}" alt="Universidad del Valle de Guatemala">
+        <h1>Horas Beca</h1>
+    </header>
+
+    <main class="contenedor-login">
+        <h2>Iniciar sesión</h2>
+        <p class="descripcion-login">Ingresa con tus datos para continuar.</p>
+
+        <form id="formularioLogin" th:action="@{/login}" method="post">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="username" autocomplete="username" placeholder="Ingrese su correo" required>
+
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="password" autocomplete="current-password" placeholder="Ingrese su contraseña" required>
+
+            <p class="mensaje-login mensaje-login--error" th:if="${param.error}" role="alert">Correo o contraseña incorrectos.</p>
+            <p class="mensaje-login mensaje-login--exito" th:if="${param.logout}" role="status">Cerraste sesión correctamente.</p>
+
+            <button type="submit">Iniciar sesión</button>
+        </form>
+    </main>
+</body>
+</html>

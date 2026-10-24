@@ -48,4 +48,9 @@ public class PantallasController {
 
         return pagina;
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }

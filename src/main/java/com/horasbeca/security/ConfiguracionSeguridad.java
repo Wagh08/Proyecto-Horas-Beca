@@ -43,6 +43,7 @@ public class ConfiguracionSeguridad {
                 .anyRequest().denyAll()
             )
             .formLogin(formulario -> formulario
+                .loginPage("/login")
                 .defaultSuccessUrl("/", true)
                 .permitAll()
             )
