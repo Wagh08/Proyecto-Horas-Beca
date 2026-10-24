@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.Authentication;
 
 @Controller
 public class PantallasController {
@@ -30,8 +31,13 @@ public class PantallasController {
     );
 
     @GetMapping("/")
-    public String inicio() {
-        return "redirect:/inicio-estudiante.html";
+    public String inicio(Authentication autenticacion) {
+        boolean esOrganizador = autenticacion.getAuthorities().stream()
+            .anyMatch(autoridad -> autoridad.getAuthority().equals("ROLE_ORGANIZADOR"));
+
+        return esOrganizador
+            ? "redirect:/inicio-organizador.html"
+            : "redirect:/inicio-estudiante.html";
     }
 
     @GetMapping("/{pagina}.html")
