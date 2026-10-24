@@ -22,3 +22,18 @@ CREATE TABLE IF NOT EXISTS perfiles_organizadores (
     telefono TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+CREATE TABLE IF NOT EXISTS actividades (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    organizador_id INTEGER NOT NULL,
+    nombre TEXT NOT NULL,
+    descripcion TEXT NOT NULL,
+    requisitos TEXT,
+    ubicacion TEXT NOT NULL,
+    fecha TEXT NOT NULL,
+    hora_inicio TEXT NOT NULL,
+    hora_fin TEXT NOT NULL,
+    cupo_maximo INTEGER NOT NULL CHECK (cupo_maximo > 0),
+    horas_acreditables INTEGER NOT NULL CHECK (horas_acreditables > 0),
+    FOREIGN KEY (organizador_id) REFERENCES perfiles_organizadores(usuario_id),
+    CHECK (hora_fin > hora_inicio)
+);
