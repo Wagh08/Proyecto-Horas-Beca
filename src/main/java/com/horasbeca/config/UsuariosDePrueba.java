@@ -34,6 +34,9 @@ public class UsuariosDePrueba {
                 "ORGANIZADOR"
             );
 
+            insertarPerfilEstudianteSiNoExiste(jdbcTemplate);
+            insertarPerfilOrganizadorSiNoExiste(jdbcTemplate);
+
             Integer total = jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM usuarios",
                 Integer.class
@@ -71,6 +74,19 @@ public class UsuariosDePrueba {
             correo,
             contrasenaHash,
             rol
+        );
+    }
+    private void insertarPerfilEstudianteSiNoExiste(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate.update(
+            "INSERT INTO perfiles_estudiantes (usuario_id, nombre, carne, ciclo_academico, porcentaje_beca, telefono) SELECT id, ?, ?, ?, ?, ? FROM usuarios WHERE correo = ? AND NOT EXISTS (SELECT 1 FROM perfiles_estudiantes WHERE usuario_id = usuarios.id)",
+            "Andrea López", "12345", 3, 20, null, "estudiante@prueba.com"
+        );
+    }
+
+    private void insertarPerfilOrganizadorSiNoExiste(JdbcTemplate jdbcTemplate) {
+        jdbcTemplate.update(
+            "INSERT INTO perfiles_organizadores (usuario_id, nombre, departamento, telefono) SELECT id, ?, ?, ? FROM usuarios WHERE correo = ? AND NOT EXISTS (SELECT 1 FROM perfiles_organizadores WHERE usuario_id = usuarios.id)",
+            "Daniela Ruiz", "Biblioteca", null, "organizador@prueba.com"
         );
     }
 }
