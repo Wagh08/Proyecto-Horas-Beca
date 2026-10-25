@@ -186,3 +186,64 @@
     background: #096b50;
     color: #ffffff;
 }
+
+.formulario-filtros {
+    display: grid;
+    gap: 12px;
+    padding: 18px;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+}
+
+.campo-ubicacion {
+    position: relative;
+}
+
+.campo-ubicacion.tiene-sugerencias input {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.sugerencias-ubicacion {
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 0;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-top: 0;
+    border-radius: 0 0 var(--radio-control) var(--radio-control);
+}
+
+.sugerencias-ubicacion[hidden] {
+    display: none;
+}
+
+.sugerencia-ubicacion {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 12px;
+    background: transparent;
+    color: var(--color-texto);
+    border: 0;
+    border-top: 1px solid var(--color-borde);
+    border-radius: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sugerencia-ubicacion:hover,
+.sugerencia-ubicacion:focus-visible {
+    background: var(--color-fondo);
+}
+
+.sugerencia-ubicacion:first-child {
+    border-top: 0;
+}

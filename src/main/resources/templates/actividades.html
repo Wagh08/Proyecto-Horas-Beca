@@ -21,28 +21,36 @@
             <p>Consulta las oportunidades disponibles y elige la que mejor se adapte a ti.</p>
         </section>
 
+        <form class="formulario-filtros" th:action="@{/actividades.html}" method="get">
+            <div class="campo"><label for="filtro-fecha">Fecha</label><input id="filtro-fecha" name="fecha" type="date" th:value="${fecha}"></div>
+            <div class="campo"><label for="filtro-turno">Horario de inicio</label><select id="filtro-turno" name="turno"><option value="">Cualquier horario</option><option value="manana" th:selected="${turno == 'manana'}">Mañana, antes de las 12:00</option><option value="tarde" th:selected="${turno == 'tarde'}">Tarde, desde las 12:00</option></select></div>
+            <div class="campo"><label for="filtro-horas">Mínimo de horas beca</label><input id="filtro-horas" name="horasMinimas" type="number" min="1" step="1" th:value="${horasMinimas}" placeholder="Cualquier cantidad"></div>
+            <div class="campo campo-ubicacion">
+                <label for="filtro-ubicacion">Ubicación</label>
+                <input id="filtro-ubicacion" name="ubicacion" type="search" placeholder="Ej. Plaza Paiz" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias-ubicacion" th:value="${ubicacion}">
+                <div id="sugerencias-ubicacion" class="sugerencias-ubicacion" role="listbox" aria-label="Ubicaciones sugeridas" hidden></div>
+            </div>
+            <button class="boton-actividad" type="submit">Aplicar filtros</button>
+            <a class="enlace-actividad" th:href="@{/actividades.html}">Limpiar filtros</a>
+        </form>
+        <p class="mensaje-actividad mensaje-actividad--error" th:if="${errorFiltros}" th:text="${errorFiltros}" role="alert"></p>
+
         <section class="bloque-actividades" aria-labelledby="titulo-disponibles">
             <h2 id="titulo-disponibles">Disponibles</h2>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">2 horas beca</span>
-                <h3>Apoyo en biblioteca</h3>
-                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre · 9:00 a 11:00</time></p>
-                <p>Biblioteca central · 2 cupos disponibles</p>
-                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
-            </article>
-
-            <article class="tarjeta-actividad">
-                <span class="etiqueta-actividad">4 horas beca</span>
-                <h3>Jornada de bienvenida</h3>
-                <p><time datetime="2026-10-23T14:00">Viernes 23 de octubre · 14:00 a 16:00</time></p>
-                <p>Edificio principal · 5 cupos disponibles</p>
-                <a class="enlace-actividad" href="detalle-actividad.html">Ver detalles</a>
+            <p class="texto-secundario" th:if="${#lists.isEmpty(actividades)}">No hay actividades disponibles por el momento.</p>
+            <article class="tarjeta-actividad" th:each="actividad : ${actividades}">
+                <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca|">Horas beca</span>
+                <h3 th:text="${actividad.nombre}">Nombre de la actividad</h3>
+                <p><time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">Fecha y horario</time></p>
+                <p th:text="${actividad.ubicacion}">Ubicación</p>
+                <p th:text="|Cupo máximo: ${actividad.cupoMaximo}|">Cupo máximo</p>
+                <a class="enlace-actividad" th:href="@{/detalle-actividad.html(id=${actividad.id})}">Ver detalles</a>
             </article>
         </section>
     </main>
 
 <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
 <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+<script src="../static/js/ubicaciones.js" th:src="@{/js/ubicaciones.js}"></script>
 </body>
 </html>
