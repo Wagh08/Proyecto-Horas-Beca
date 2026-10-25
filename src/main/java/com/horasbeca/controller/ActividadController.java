@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.horasbeca.model.Actividad;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import com.horasbeca.service.UbicacionService;
 
 @Controller
 public class ActividadController {
 
     private final ActividadRepository actividadRepository;
     private final ActividadService actividadService;
+    private final UbicacionService ubicacionService;
 
-    public ActividadController(ActividadRepository actividadRepository, ActividadService actividadService) {
+    public ActividadController(ActividadRepository actividadRepository, ActividadService actividadService, UbicacionService ubicacionService) {
         this.actividadRepository = actividadRepository;
         this.actividadService = actividadService;
+        this.ubicacionService = ubicacionService;
     }
 
     @GetMapping("/crear-actividad.html")
@@ -49,16 +52,17 @@ public class ActividadController {
     }
 
     @GetMapping("/actividades.html")
-    public String actividades(@RequestParam(name = "fecha", defaultValue = "") String fecha, @RequestParam(name = "turno", defaultValue = "") String turno, @RequestParam(name = "horasMinimas", defaultValue = "") String horasMinimas, Model modelo) {
+    public String actividades(@RequestParam(name = "fecha", defaultValue = "") String fecha, @RequestParam(name = "turno", defaultValue = "") String turno, @RequestParam(name = "horasMinimas", defaultValue = "") String horasMinimas, @RequestParam(name = "ubicacion", defaultValue = "") String ubicacion, Model modelo) {
         modelo.addAttribute("fecha", fecha);
         modelo.addAttribute("turno", turno);
         modelo.addAttribute("horasMinimas", horasMinimas);
+        modelo.addAttribute("ubicacion", ubicacion);
 
         try {
-            modelo.addAttribute("actividades", actividadService.filtrarDisponibles(fecha, turno, horasMinimas));
+            modelo.addAttribute("actividades", actividadService.filtrarDisponibles(fecha, turno, horasMinimas).stream().filter(actividad -> ubicacionService.coincide(actividad.ubicacion(), ubicacion)).toList());
         } catch (IllegalArgumentException excepcion) {
             modelo.addAttribute("errorFiltros", excepcion.getMessage());
-            modelo.addAttribute("actividades", actividadRepository.listarDisponibles());
+            modelo.addAttribute("actividades", actividadRepository.listarDisponibles().stream().filter(actividad -> ubicacionService.coincide(actividad.ubicacion(), ubicacion)).toList());
         }
 
         return "actividades";
