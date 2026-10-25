@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
+import java.util.List; 
 import org.springframework.stereotype.Service;
 
 @Service
@@ -105,5 +106,28 @@ public class ActividadService {
         }
 
         throw new IllegalArgumentException("Indica un número entero positivo para " + etiqueta + ".");
+    }
+
+    public List<Actividad> filtrarDisponibles(String fechaTexto, String turno, String horasMinimasTexto) {
+        LocalDate fecha = null;
+        Integer horasMinimas = null;
+
+        if (!fechaTexto.isBlank()) {
+            try {
+                fecha = LocalDate.parse(fechaTexto);
+            } catch (DateTimeParseException excepcion) {
+                throw new IllegalArgumentException("Indica una fecha válida para el filtro.");
+            }
+        }
+
+        if (!turno.isEmpty() && !turno.equals("manana") && !turno.equals("tarde")) {
+            throw new IllegalArgumentException("Selecciona un horario válido.");
+        }
+
+        if (!horasMinimasTexto.isBlank()) {
+            horasMinimas = enteroPositivo(horasMinimasTexto, "mínimo de horas");
+        }
+
+        return actividadRepository.listarDisponibles(fecha, turno, horasMinimas);
     }
 }
