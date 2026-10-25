@@ -25,8 +25,6 @@ public class PantallasController {
         "progreso",
         "perfil-estudiante",
         "inicio-organizador",
-        "gestion",
-        "crear-actividad",
         "participantes",
         "solicitudes",
         "verificar-llegadas",

@@ -169,3 +169,20 @@
     color: var(--color-texto-secundario);
     opacity: 1;
 }
+.mensaje-actividad {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: var(--radio-control);
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.mensaje-actividad--error {
+    background: #982b3b;
+    color: #ffffff;
+}
+
+.mensaje-actividad--exito {
+    background: #096b50;
+    color: #ffffff;
+}
