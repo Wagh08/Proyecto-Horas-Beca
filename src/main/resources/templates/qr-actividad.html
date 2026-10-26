@@ -57,6 +57,8 @@
                 Fecha y horario
             </p>
 
+            <p class="mensaje-actividad mensaje-actividad--exito" th:if="${acreditada}" role="status">Tu asistencia ya fue acreditada. Puedes verla en Progreso.</p>
+
             <!-- MENSAJE DE ERROR -->
             <p class="mensaje-actividad mensaje-actividad--error"
                th:if="${param.errorQr}"
@@ -65,8 +67,7 @@
             </p>
 
             <!-- MOSTRAR QR GENERADO -->
-            <div class="visor-qr"
-                 th:if="${vista.imagen != null}">
+            <div class="visor-qr" th:if="${vista.imagen != null and !acreditada}">
 
                 <img class="imagen-qr"
                      th:src="|data:image/png;base64,${vista.imagen}|"
@@ -75,8 +76,7 @@
             </div>
 
             <!-- CODIGO DE RESPALDO -->
-            <p class="codigo-qr-texto"
-               th:if="${vista.token != null}">
+            <p class="codigo-qr-texto" th:if="${vista.token != null and !acreditada}">
 
                 Código de respaldo:
 
@@ -88,7 +88,7 @@
 
             <!-- QR NO DISPONIBLE -->
             <div class="visor-qr"
-                 th:if="${vista.imagen == null}">
+                 th:if="${vista.imagen == null and !acreditada}">
 
                 <div>
                     <strong>QR aún no disponible</strong>
@@ -112,7 +112,7 @@
 
             <!-- BOTON PARA GENERAR QR -->
             <form
-                th:if="${vista.finalizada and vista.inscripcion.estado == 'LLEGADA_VERIFICADA' and vista.token == null}"
+                th:if="${vista.finalizada and vista.inscripcion.estado == 'LLEGADA_VERIFICADA' and vista.token == null and !acreditada}"
                 th:action="@{/actividades/{id}/generar-qr(id=${vista.actividad.id})}"
                 method="post">
 
@@ -128,7 +128,7 @@
             </form>
 
             <!-- INSTRUCCIONES -->
-            <p th:if="${vista.imagen != null}">
+            <p th:if="${vista.imagen != null and !acreditada}">
 
                 Muestra este código QR al organizador
                 para validar tu participación.

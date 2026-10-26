@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.horasbeca.repository.AcreditacionRepository;
 
 @Controller
 public class CodigoQrController {
 
     private final CodigoQrService codigoQrService;
+    private final AcreditacionRepository acreditacionRepository;
 
-    public CodigoQrController(
-            CodigoQrService codigoQrService) {
-
+    public CodigoQrController(CodigoQrService codigoQrService, AcreditacionRepository acreditacionRepository) {
         this.codigoQrService = codigoQrService;
+        this.acreditacionRepository = acreditacionRepository;
     }
 
     // MOSTRAR QR DEL ESTUDIANTE
@@ -37,13 +38,9 @@ public class CodigoQrController {
             "no-store"
         );
 
-        modelo.addAttribute(
-            "vista",
-            codigoQrService.consultar(
-                id,
-                autenticacion.getName()
-            )
-        );
+        CodigoQrService.VistaQr vista = codigoQrService.consultar(id, autenticacion.getName());
+        modelo.addAttribute("vista", vista);
+        modelo.addAttribute("acreditada", acreditacionRepository.existe(vista.inscripcion().id()));
 
         return "qr-actividad";
     }
