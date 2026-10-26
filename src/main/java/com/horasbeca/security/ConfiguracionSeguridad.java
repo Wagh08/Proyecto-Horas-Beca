@@ -49,6 +49,10 @@ public class ConfiguracionSeguridad {
                     HttpMethod.POST,
                     "/actividades/*/inscribir"
                 ).hasRole("ESTUDIANTE")
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/actividades/*/cancelar"
+                ).hasRole("ESTUDIANTE")
                 .anyRequest().denyAll()
         
             )

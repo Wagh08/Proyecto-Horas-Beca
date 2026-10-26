@@ -1,9 +1,11 @@
+
 package com.horasbeca.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.horasbeca.repository.ActividadRepository;
 import com.horasbeca.repository.InscripcionRepository;
@@ -26,6 +28,7 @@ public class InscripcionController {
         this.actividadRepository = actividadRepository;
     }
 
+    // INSCRIBIR ESTUDIANTE EN UNA ACTIVIDAD
     @PostMapping("/actividades/{id}/inscribir")
     public String inscribir(
             @PathVariable("id") long id,
@@ -44,6 +47,31 @@ public class InscripcionController {
 
             return "redirect:/detalle-actividad.html?id="
                 + id + "&errorInscripcion";
+        }
+    }
+
+    // CANCELAR INSCRIPCION Y LIBERAR CUPO
+    @PostMapping("/actividades/{id}/cancelar")
+    public String cancelar(
+            @PathVariable("id") long id,
+            @RequestParam(name = "motivo", defaultValue = "")
+            String motivo,
+            Authentication autenticacion) {
+
+        try {
+            inscripcionService.cancelar(
+                id,
+                autenticacion.getName(),
+                motivo
+            );
+
+            return "redirect:/detalle-actividad.html?id="
+                + id + "&cancelada";
+
+        } catch (IllegalArgumentException excepcion) {
+
+            return "redirect:/detalle-actividad.html?id="
+                + id + "&errorCancelacion";
         }
     }
 }

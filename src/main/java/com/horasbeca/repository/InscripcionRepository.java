@@ -18,10 +18,11 @@ public class InscripcionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // BUSCAR INSCRIPCION DE UN ESTUDIANTE
     public Optional<Inscripcion> buscar(
-        long actividadId,
-        String correoEstudiante
-    ) {
+            long actividadId,
+            String correoEstudiante) {
+
         String sql =
             "SELECT i.* FROM inscripciones i " +
             "JOIN usuarios u ON u.id = i.estudiante_id " +
@@ -47,7 +48,9 @@ public class InscripcionRepository {
         ).stream().findFirst();
     }
 
+    // CONTAR CUPOS OCUPADOS
     public int ocupados(long actividadId) {
+
         Integer cantidad = jdbcTemplate.queryForObject(
             "SELECT COUNT(*) FROM inscripciones " +
             "WHERE actividad_id = ? " +
@@ -62,11 +65,12 @@ public class InscripcionRepository {
         return cantidad == null ? 0 : cantidad;
     }
 
+    // INSCRIBIR ESTUDIANTE
     public int inscribir(
-        long actividadId,
-        String correoEstudiante,
-        LocalDateTime ahora
-    ) {
+            long actividadId,
+            String correoEstudiante,
+            LocalDateTime ahora) {
+
         String sql =
             "INSERT INTO inscripciones " +
             "(actividad_id, estudiante_id, estado, inscrito_en) " +
@@ -109,6 +113,78 @@ public class InscripcionRepository {
             fecha,
             fecha,
             hora
+        );
+    }
+
+    // CANCELAR INSCRIPCION Y LIBERAR CUPO
+    public int cancelar(
+            long actividadId,
+            String correoEstudiante,
+            LocalDateTime ahora,
+            String motivo,
+            boolean tardia) {
+
+        String sql =
+            "UPDATE inscripciones " +
+            "SET estado = 'CANCELADA', " +
+            "cancelado_en = ?, " +
+            "motivo_cancelacion = ?, " +
+            "cancelada_tarde = ? " +
+            "WHERE actividad_id = ? " +
+            "AND estudiante_id = (" +
+            "SELECT id FROM usuarios " +
+            "WHERE correo = ? AND rol = 'ESTUDIANTE') " +
+            "AND estado = 'INSCRITA' " +
+            "AND EXISTS (" +
+            "SELECT 1 FROM actividades a " +
+            "WHERE a.id = inscripciones.actividad_id " +
+            "AND (a.fecha > ? OR " +
+            "(a.fecha = ? AND a.hora_inicio > ?)))";
+
+        String fecha = ahora.toLocalDate().toString();
+
+        String hora = ahora.toLocalTime().format(
+            DateTimeFormatter.ofPattern("HH:mm")
+        );
+
+        return jdbcTemplate.update(
+            sql,
+            ahora.toString(),
+            motivo,
+            tardia ? 1 : 0,
+            actividadId,
+            correoEstudiante,
+            fecha,
+            fecha,
+            hora
+        );
+    }
+
+    // GUARDAR HISTORIAL DE CANCELACIONES
+    public int guardarCancelacion(
+            long actividadId,
+            String correoEstudiante,
+            LocalDateTime ahora,
+            String motivo,
+            boolean tardia) {
+
+        String sql =
+            "INSERT INTO historial_cancelaciones " +
+            "(inscripcion_id, cancelado_en, motivo, tardia) " +
+            "SELECT i.id, ?, ?, ? " +
+            "FROM inscripciones i " +
+            "JOIN usuarios u ON u.id = i.estudiante_id " +
+            "WHERE i.actividad_id = ? " +
+            "AND u.correo = ? " +
+            "AND i.estado = 'CANCELADA'";
+
+        return jdbcTemplate.update(
+            sql,
+            ahora.toString(),
+            motivo,
+            tardia ? 1 : 0,
+            actividadId,
+            correoEstudiante
         );
     }
 }
