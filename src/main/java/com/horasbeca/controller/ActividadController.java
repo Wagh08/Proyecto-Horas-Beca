@@ -49,6 +49,7 @@ public class ActividadController {
     // MOSTRAR FORMULARIO PARA CREAR ACTIVIDAD
     @GetMapping("/crear-actividad.html")
     public String crearActividad(Model modelo) {
+
         modelo.addAttribute("valores", Map.of());
         return "crear-actividad";
     }
@@ -61,6 +62,7 @@ public class ActividadController {
             Model modelo) {
 
         try {
+
             actividadService.publicar(
                 campos,
                 autenticacion.getName()
@@ -95,6 +97,7 @@ public class ActividadController {
         Map<Long, Integer> alertas = new HashMap<>();
 
         for (Actividad actividad : actividades) {
+
             alertas.put(
                 actividad.id(),
                 inscripcionRepository
@@ -110,7 +113,7 @@ public class ActividadController {
         return "gestion";
     }
 
-    // LISTAR ACTIVIDADES DISPONIBLES
+    // LISTAR ACTIVIDADES DISPONIBLES Y MIS ACTIVIDADES
     @GetMapping("/actividades.html")
     public String actividades(
             @RequestParam(name = "fecha", defaultValue = "")
@@ -136,6 +139,7 @@ public class ActividadController {
         List<Actividad> actividades;
 
         try {
+
             actividades = actividadService
                 .filtrarDisponibles(
                     fecha,
@@ -193,6 +197,15 @@ public class ActividadController {
         modelo.addAttribute(
             "idsInscritas",
             inscripcionRepository.listarIdsActivos(
+                autenticacion.getName()
+            )
+        );
+
+        // RF08.01: ACTIVIDADES DEL ESTUDIANTE
+        // INCLUYE ACTIVIDADES YA FINALIZADAS
+        modelo.addAttribute(
+            "misActividades",
+            actividadRepository.listarInscritas(
                 autenticacion.getName()
             )
         );

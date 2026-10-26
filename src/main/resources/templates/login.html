@@ -1,35 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Iniciar sesión | Horas Beca</title>
-    <link rel="stylesheet" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/estilos.css}">
+
     <script th:src="@{/js/tema.js}"></script>
 </head>
+
 <body>
+
     <header class="encabezado-login">
-        <img class="logo-universidad" th:src="@{/imgs/LogoUVG.png}" alt="Universidad del Valle de Guatemala">
+
+        <img class="logo-universidad"
+             th:src="@{/imgs/LogoUVG.png}"
+             alt="Universidad del Valle de Guatemala">
+
         <h1>Horas Beca</h1>
+
     </header>
 
     <main class="contenedor-login">
+
         <h2>Iniciar sesión</h2>
-        <p class="descripcion-login">Ingresa con tus datos para continuar.</p>
 
-        <form id="formularioLogin" th:action="@{/login}" method="post">
-            <label for="correo">Correo electrónico</label>
-            <input type="email" id="correo" name="username" autocomplete="username" placeholder="Ingrese su correo" required>
+        <p class="descripcion-login">
+            Ingresa con tus datos para continuar.
+        </p>
 
-            <label for="contrasena">Contraseña</label>
-            <input type="password" id="contrasena" name="password" autocomplete="current-password" placeholder="Ingrese su contraseña" required>
+        <!-- FORMULARIO DE INICIO DE SESION -->
+        <form id="formularioLogin"
+              th:action="@{/login}"
+              method="post">
 
-            <p class="mensaje-login mensaje-login--error" th:if="${param.error}" role="alert">Correo o contraseña incorrectos.</p>
-            <p class="mensaje-login mensaje-login--exito" th:if="${param.logout}" role="status">Cerraste sesión correctamente.</p>
+            <!-- PROTECCION CSRF -->
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
 
-            <button type="submit">Iniciar sesión</button>
+            <!-- CORREO ELECTRONICO -->
+            <label for="correo">
+                Correo electrónico
+            </label>
+
+            <input type="email"
+                   id="correo"
+                   name="username"
+                   autocomplete="username"
+                   placeholder="Ingrese su correo"
+                   required>
+
+            <!-- CONTRASENA -->
+            <label for="contrasena">
+                Contraseña
+            </label>
+
+            <input type="password"
+                   id="contrasena"
+                   name="password"
+                   autocomplete="current-password"
+                   placeholder="Ingrese su contraseña"
+                   required>
+
+            <!-- ERROR DE AUTENTICACION -->
+            <p class="mensaje-login mensaje-login--error"
+               th:if="${param.error}"
+               role="alert">
+                Correo o contraseña incorrectos.
+            </p>
+
+            <!-- SESION CERRADA -->
+            <p class="mensaje-login mensaje-login--exito"
+               th:if="${param.logout}"
+               role="status">
+                Cerraste sesión correctamente.
+            </p>
+
+            <!-- BOTON DE INICIO -->
+            <button type="submit">
+                Iniciar sesión
+            </button>
+
         </form>
+
     </main>
+
 </body>
 </html>

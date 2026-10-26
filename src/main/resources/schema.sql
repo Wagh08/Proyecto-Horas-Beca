@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     correo TEXT NOT NULL UNIQUE,
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS perfiles_organizadores (
     telefono TEXT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
 CREATE TABLE IF NOT EXISTS actividades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     organizador_id INTEGER NOT NULL,
@@ -82,3 +84,14 @@ ON inscripciones(actividad_id, estado);
 CREATE INDEX IF NOT EXISTS
     idx_historial_cancelaciones_inscripcion
 ON historial_cancelaciones(inscripcion_id);
+
+
+-- RF08.01: GENERACIÓN DE CÓDIGOS QR
+
+CREATE TABLE IF NOT EXISTS codigos_qr (
+    inscripcion_id INTEGER PRIMARY KEY,
+    token TEXT NOT NULL UNIQUE,
+    creado_en TEXT NOT NULL,
+    FOREIGN KEY (inscripcion_id)
+        REFERENCES inscripciones(id)
+);

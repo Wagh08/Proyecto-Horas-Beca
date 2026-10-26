@@ -1,3 +1,4 @@
+
 .pagina-asistencia {
     display: grid;
     gap: 18px;
@@ -117,4 +118,20 @@
 .accion-asistencia:focus-visible {
     outline: 2px solid var(--color-principal);
     outline-offset: 3px;
+}
+
+/* RF08.01 - ESTILOS DEL CODIGO QR */
+
+.imagen-qr {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: var(--radio-control);
+}
+
+.codigo-qr-texto {
+    overflow-wrap: anywhere;
+    font-size: 0.85rem;
 }

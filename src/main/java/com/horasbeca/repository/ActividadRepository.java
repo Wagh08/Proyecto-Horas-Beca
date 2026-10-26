@@ -103,8 +103,13 @@ public class ActividadRepository {
 
         List<Object> parametros = new ArrayList<>();
 
-        parametros.add(ahora.toLocalDate().toString());
-        parametros.add(ahora.toLocalDate().toString());
+        parametros.add(
+            ahora.toLocalDate().toString()
+        );
+
+        parametros.add(
+            ahora.toLocalDate().toString()
+        );
 
         parametros.add(
             ahora.toLocalTime().format(
@@ -144,6 +149,33 @@ public class ActividadRepository {
             consulta.toString(),
             this::mapear,
             parametros.toArray()
+        );
+    }
+
+    // RF08.01: LISTAR ACTIVIDADES INSCRITAS
+    // INCLUYE ACTIVIDADES EN CURSO Y FINALIZADAS
+    public List<Actividad> listarInscritas(
+            String correoEstudiante) {
+
+        String sql =
+            CONSULTA +
+            " JOIN inscripciones i " +
+            "ON i.actividad_id = a.id " +
+            "JOIN usuarios u " +
+            "ON u.id = i.estudiante_id " +
+            "WHERE u.correo = ? " +
+            "AND u.rol = 'ESTUDIANTE' " +
+            "AND i.estado IN (" +
+            "'INSCRITA', " +
+            "'LLEGADA_AVISADA', " +
+            "'LLEGADA_VERIFICADA') " +
+            "ORDER BY a.fecha DESC, " +
+            "a.hora_inicio DESC, a.id DESC";
+
+        return jdbcTemplate.query(
+            sql,
+            this::mapear,
+            correoEstudiante
         );
     }
 

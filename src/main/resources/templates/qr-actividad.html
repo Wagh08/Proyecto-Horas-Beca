@@ -1,41 +1,161 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>QR de asistencia · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/asistencia.css"
+          th:href="@{/css/asistencia.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
-<body data-rol="estudiante" data-pagina="actividades">
+
+<body data-rol="estudiante"
+      data-pagina="actividades">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
-        <a class="enlace-actividad" href="asistencia-actividad.html">Volver a mi asistencia</a>
+    <main class="contenido-app pagina-asistencia"
+          id="contenido-pagina">
+
+        <!-- VOLVER A LA ASISTENCIA -->
+        <a class="enlace-actividad"
+           th:href="@{/asistencia-actividad.html(id=${vista.actividad.id})}">
+            Volver a mi asistencia
+        </a>
 
         <section class="panel-asistencia">
-            <h2>QR de asistencia</h2>
-            <p>Apoyo en biblioteca · Jueves 22 de octubre</p>
 
-            <div class="visor-qr">
-                <div>
-                    <strong>QR aún no disponible</strong>
-                    <p>Podrás mostrarlo cuando termine la actividad a las 11:00 y se haya verificado tu llegada.</p>
-                </div>
+            <!-- INFORMACION DE LA ACTIVIDAD -->
+            <h2 th:text="|QR · ${vista.actividad.nombre}|">
+                QR de asistencia
+            </h2>
+
+            <p th:text="|${vista.actividad.fechaTexto()} · ${vista.actividad.horaInicio} a ${vista.actividad.horaFin}|">
+                Fecha y horario
+            </p>
+
+            <!-- MENSAJE DE ERROR -->
+            <p class="mensaje-actividad mensaje-actividad--error"
+               th:if="${param.errorQr}"
+               role="alert">
+                Todavía no es posible generar este QR.
+            </p>
+
+            <!-- MOSTRAR QR GENERADO -->
+            <div class="visor-qr"
+                 th:if="${vista.imagen != null}">
+
+                <img class="imagen-qr"
+                     th:src="|data:image/png;base64,${vista.imagen}|"
+                     alt="Código QR de tu asistencia">
+
             </div>
 
-            <p>Mostrar este QR al organizador permitirá validar tu participación. La inscripción y la confirmación de llegada no acreditan horas.</p>
+            <!-- CODIGO DE RESPALDO -->
+            <p class="codigo-qr-texto"
+               th:if="${vista.token != null}">
+
+                Código de respaldo:
+
+                <strong th:text="${vista.token}">
+                    Código
+                </strong>
+
+            </p>
+
+            <!-- QR NO DISPONIBLE -->
+            <div class="visor-qr"
+                 th:if="${vista.imagen == null}">
+
+                <div>
+                    <strong>QR aún no disponible</strong>
+                </div>
+
+            </div>
+
+            <!-- ACTIVIDAD NO FINALIZADA -->
+            <p th:if="${!vista.finalizada}">
+                Podrás generar tu QR cuando termine
+                el horario de la actividad.
+            </p>
+
+            <!-- LLEGADA NO VERIFICADA -->
+            <p th:if="${vista.finalizada and vista.inscripcion.estado != 'LLEGADA_VERIFICADA'}">
+
+                El organizador debe verificar tu llegada
+                para habilitar el código QR.
+
+            </p>
+
+            <!-- BOTON PARA GENERAR QR -->
+            <form
+                th:if="${vista.finalizada and vista.inscripcion.estado == 'LLEGADA_VERIFICADA' and vista.token == null}"
+                th:action="@{/actividades/{id}/generar-qr(id=${vista.actividad.id})}"
+                method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button class="accion-asistencia"
+                        type="submit">
+                    Generar mi QR
+                </button>
+
+            </form>
+
+            <!-- INSTRUCCIONES -->
+            <p th:if="${vista.imagen != null}">
+
+                Muestra este código QR al organizador
+                para validar tu participación.
+
+                Tus horas se registrarán cuando
+                se complete la acreditación.
+
+            </p>
+
+            <p>
+                La inscripción y la confirmación
+                de llegada no acreditan horas
+                automáticamente.
+            </p>
+
         </section>
+
     </main>
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+    <!-- NAVEGACION INFERIOR -->
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>

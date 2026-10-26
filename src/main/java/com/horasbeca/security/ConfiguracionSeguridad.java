@@ -108,6 +108,12 @@ public class ConfiguracionSeguridad {
                     "/inscripciones/*/verificar-llegada"
                 ).hasRole("ORGANIZADOR")
 
+                // RF-08.01: GENERAR CODIGO QR
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/actividades/*/generar-qr"
+                ).hasRole("ESTUDIANTE")
+
                 // DENEGAR RUTAS NO AUTORIZADAS
                 .anyRequest().denyAll()
             )
