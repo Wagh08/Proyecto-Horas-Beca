@@ -59,9 +59,11 @@ CREATE TABLE IF NOT EXISTS inscripciones (
         CHECK (cancelada_tarde IN (0, 1)),
     aviso_llegada_en TEXT,
     verificado_en TEXT,
+    verificado_por_id INTEGER,
     UNIQUE (actividad_id, estudiante_id),
     FOREIGN KEY (actividad_id) REFERENCES actividades(id),
-    FOREIGN KEY (estudiante_id) REFERENCES perfiles_estudiantes(usuario_id)
+    FOREIGN KEY (estudiante_id) REFERENCES perfiles_estudiantes(usuario_id),
+    FOREIGN KEY (verificado_por_id) REFERENCES perfiles_organizadores(usuario_id)
 );
 
 CREATE TABLE IF NOT EXISTS historial_cancelaciones (

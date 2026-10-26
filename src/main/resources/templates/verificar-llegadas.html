@@ -109,7 +109,7 @@
                 </span>
 
                 <!-- LLEGADA VERIFICADA -->
-                <span th:if="${participante.estado == 'LLEGADA_VERIFICADA'}">
+                <span th:if="${participante.estado == 'LLEGADA_VERIFICADA'}" th:text="${participante.verificadoPor == null ? 'Llegada verificada (registro anterior)' : 'Llegada verificada por ' + participante.verificadoPor}">
                     Llegada verificada
                 </span>
 
