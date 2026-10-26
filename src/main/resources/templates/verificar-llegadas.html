@@ -1,46 +1,109 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Llegadas · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/asistencia.css"
+          th:href="@{/css/asistencia.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
+
 <body data-rol="organizador" data-pagina="gestion">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
-        <a class="enlace-actividad" href="participantes.html">Volver a participantes</a>
+    <main class="contenido-app pagina-asistencia"
+          id="contenido-pagina">
 
+        <!-- VOLVER A PARTICIPANTES -->
+        <a class="enlace-actividad"
+           th:href="@{/participantes.html(id=${actividad.id})}">
+            Volver a participantes
+        </a>
+
+        <!-- LISTA DE LLEGADAS -->
         <section class="panel-asistencia">
-            <h2>Verificar llegadas</h2>
-            <p>Apoyo en biblioteca · Jueves 22 de octubre</p>
 
-            <div class="fila-persona">
-                <strong>Andrea López</strong>
-                <span>Aviso de llegada recibido · Pendiente de verificación</span>
-                <button class="accion-asistencia" type="button">Verificar llegada</button>
+            <h2 th:text="|Llegadas · ${actividad.nombre}|">
+                Llegadas
+            </h2>
+
+            <p th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">
+                Fecha y horario
+            </p>
+
+            <!-- SIN PARTICIPANTES -->
+            <p class="texto-secundario"
+               th:if="${#lists.isEmpty(participantes)}">
+                No hay estudiantes inscritos.
+            </p>
+
+            <!-- LISTADO REAL DE ESTUDIANTES -->
+            <div class="fila-persona"
+                 th:each="participante : ${participantes}">
+
+                <!-- NOMBRE -->
+                <strong th:text="${participante.nombre}">
+                    Estudiante
+                </strong>
+
+                <!-- CARNE -->
+                <span th:text="|Carné ${participante.carne}|">
+                    Carné
+                </span>
+
+                <!-- TODAVIA NO AVISA -->
+                <span th:if="${participante.estado == 'INSCRITA'}">
+                    Inscrito · todavía no avisó su llegada
+                </span>
+
+                <!-- AVISO RECIBIDO -->
+                <span th:if="${participante.estado == 'LLEGADA_AVISADA'}">
+                    Avisó que llegó · pendiente de verificación
+                </span>
+
+                <!-- LLEGADA VERIFICADA -->
+                <span th:if="${participante.estado == 'LLEGADA_VERIFICADA'}">
+                    Llegada verificada
+                </span>
+
             </div>
 
-            <div class="fila-persona">
-                <strong>Carlos Pérez</strong>
-                <span>Inscrito · Todavía no confirma su llegada</span>
-            </div>
         </section>
 
-        <a class="accion-asistencia" href="escanear-qr.html">Ir al escáner QR</a>
     </main>
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>
