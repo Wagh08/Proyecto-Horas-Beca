@@ -285,4 +285,43 @@ public class InscripcionRepository {
 
         return cantidad == null ? 0 : cantidad;
     }
+
+    // RF-07.01: GUARDAR AVISO DE LLEGADA
+    public int avisarLlegada(
+            long actividadId,
+            String correoEstudiante,
+            LocalDateTime ahora) {
+
+        String sql =
+            "UPDATE inscripciones " +
+            "SET estado = 'LLEGADA_AVISADA', " +
+            "aviso_llegada_en = ? " +
+            "WHERE actividad_id = ? " +
+            "AND estudiante_id = (" +
+            "SELECT id FROM usuarios " +
+            "WHERE correo = ? AND rol = 'ESTUDIANTE') " +
+            "AND estado = 'INSCRITA' " +
+            "AND EXISTS (" +
+            "SELECT 1 FROM actividades a " +
+            "WHERE a.id = inscripciones.actividad_id " +
+            "AND a.fecha = ? " +
+            "AND a.hora_inicio <= ? " +
+            "AND a.hora_fin > ?)";
+
+        String fecha = ahora.toLocalDate().toString();
+
+        String hora = ahora.toLocalTime().format(
+            DateTimeFormatter.ofPattern("HH:mm")
+        );
+
+        return jdbcTemplate.update(
+            sql,
+            ahora.toString(),
+            actividadId,
+            correoEstudiante,
+            fecha,
+            hora,
+            hora
+        );
+    }
 }

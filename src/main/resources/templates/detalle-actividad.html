@@ -116,7 +116,6 @@
                 </div>
 
             </dl>
-
         </article>
 
         <!-- MENSAJE DE INSCRIPCION EXITOSA -->
@@ -155,7 +154,6 @@
                     type="submit">
                 Inscribirme
             </button>
-
         </form>
 
         <!-- MENSAJE DE CUPOS AGOTADOS -->
@@ -211,7 +209,6 @@
                     type="submit">
                 Cancelar mi inscripción
             </button>
-
         </form>
 
         <!-- ACTIVIDAD YA INICIADA -->
@@ -220,6 +217,13 @@
             Esta actividad ya comenzó.
             Tu inscripción permanece registrada.
         </p>
+
+        <!-- RF-07.01: VER MI ASISTENCIA -->
+        <a class="boton-actividad"
+           th:if="${inscripcion != null and inscripcion.estado != 'CANCELADA'}"
+           th:href="@{/asistencia-actividad.html(id=${actividad.id})}">
+            Ver mi asistencia
+        </a>
 
     </main>
 

@@ -1,60 +1,197 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Mi asistencia · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/asistencia.css"
+          th:href="@{/css/asistencia.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
+
 <body data-rol="estudiante" data-pagina="actividades">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
-        <a class="enlace-actividad" href="detalle-actividad.html">Volver a la actividad</a>
+    <main class="contenido-app pagina-asistencia"
+          id="contenido-pagina">
 
+        <!-- VOLVER A LA ACTIVIDAD -->
+        <a class="enlace-actividad"
+           th:href="@{/detalle-actividad.html(id=${actividad.id})}">
+            Volver a la actividad
+        </a>
+
+        <!-- INFORMACION REAL DE LA ACTIVIDAD -->
         <section class="panel-asistencia">
-            <h2>Apoyo en biblioteca</h2>
-            <p>Jueves 22 de octubre · 9:00 a 11:00</p>
-            <p>Biblioteca central · Tu inscripción está confirmada.</p>
+
+            <h2 th:text="${actividad.nombre}">
+                Nombre de la actividad
+            </h2>
+
+            <p th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">
+                Fecha y horario
+            </p>
+
+            <p th:text="${actividad.ubicacion}">
+                Ubicación
+            </p>
+
         </section>
 
-        <section class="panel-asistencia" aria-labelledby="titulo-estado">
-            <h3 id="titulo-estado">Tu asistencia</h3>
+        <!-- ESTADO DE ASISTENCIA -->
+        <section class="panel-asistencia"
+                 aria-labelledby="titulo-estado">
 
+            <h3 id="titulo-estado">
+                Tu asistencia
+            </h3>
+
+            <!-- PASO 1: INSCRIPCION -->
             <div class="paso-asistencia">
-                <span class="marca-paso" aria-hidden="true">✓</span>
-                <div><strong>Inscripción confirmada</strong><small>Tienes un lugar en esta actividad.</small></div>
+
+                <span class="marca-paso"
+                      aria-hidden="true">
+                    ✓
+                </span>
+
+                <div>
+                    <strong>Inscripción confirmada</strong>
+                    <small>Tu cupo está reservado.</small>
+                </div>
+
             </div>
 
+            <!-- PASO 2: AVISO DE LLEGADA -->
             <div class="paso-asistencia">
-                <span class="marca-paso" aria-hidden="true">2</span>
-                <div><strong>Confirmar llegada</strong><small>Hazlo cuando estés en el lugar de la actividad.</small></div>
+
+                <span class="marca-paso"
+                      aria-hidden="true"
+                      th:text="${inscripcion.avisoLlegadaEn != null ? '✓' : '2'}">
+                    2
+                </span>
+
+                <div>
+                    <strong>Aviso de llegada</strong>
+
+                    <small th:text="${inscripcion.avisoLlegadaEn != null ? 'Ya avisaste que llegaste.' : 'Avísanos cuando estés en el lugar durante el horario de la actividad.'}">
+                        Estado del aviso
+                    </small>
+                </div>
+
             </div>
 
+            <!-- PASO 3: VERIFICACION DEL ORGANIZADOR -->
             <div class="paso-asistencia">
-                <span class="marca-paso" aria-hidden="true">3</span>
-                <div><strong>Verificación del organizador</strong><small>El organizador confirmará que llegaste.</small></div>
+
+                <span class="marca-paso"
+                      aria-hidden="true"
+                      th:text="${inscripcion.verificadoEn != null ? '✓' : '3'}">
+                    3
+                </span>
+
+                <div>
+                    <strong>Verificación del organizador</strong>
+
+                    <small th:text="${inscripcion.verificadoEn != null ? 'Tu llegada ya fue verificada.' : 'El organizador debe confirmar tu llegada.'}">
+                        Estado de verificación
+                    </small>
+                </div>
+
             </div>
 
+            <!-- PASO 4: QR FUTURO -->
             <div class="paso-asistencia">
-                <span class="marca-paso" aria-hidden="true">4</span>
-                <div><strong>QR al finalizar</strong><small>Estará disponible al terminar el horario.</small></div>
+
+                <span class="marca-paso"
+                      aria-hidden="true">
+                    4
+                </span>
+
+                <div>
+                    <strong>QR al finalizar</strong>
+
+                    <small>
+                        El QR y la acreditación se implementarán
+                        en el siguiente requisito.
+                    </small>
+                </div>
+
             </div>
 
-            <button class="accion-asistencia" type="button">Confirmar asistencia</button>
+            <!-- MENSAJE DE AVISO GUARDADO -->
+            <p class="mensaje-actividad mensaje-actividad--exito"
+               th:if="${param.avisoGuardado}"
+               role="status">
+                Tu aviso de llegada quedó registrado.
+            </p>
+
+            <!-- MENSAJE DE ERROR -->
+            <p class="mensaje-actividad mensaje-actividad--error"
+               th:if="${param.errorAviso}"
+               role="alert">
+                No se pudo registrar el aviso.
+                Comprueba el horario y que tu inscripción siga activa.
+            </p>
+
+            <!-- FORMULARIO PARA AVISAR LLEGADA -->
+            <form
+                th:if="${puedeAvisar}"
+                th:action="@{/actividades/{id}/avisar-llegada(id=${actividad.id})}"
+                method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button class="accion-asistencia"
+                        type="submit">
+                    Confirmar que ya llegué
+                </button>
+
+            </form>
+
+            <!-- MENSAJE SI TODAVIA NO PUEDE AVISAR -->
+            <p class="texto-secundario"
+               th:if="${inscripcion.estado == 'INSCRITA' and !puedeAvisar}">
+                El aviso estará disponible durante
+                el horario de la actividad.
+            </p>
+
         </section>
 
-        <a class="enlace-actividad" href="qr-actividad.html">Consultar pantalla del QR</a>
     </main>
 
-<nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
-<script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
+
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>
