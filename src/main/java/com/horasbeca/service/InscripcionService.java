@@ -28,7 +28,7 @@ public class InscripcionService {
         this.actividadRepository = actividadRepository;
     }
 
-    // INSCRIBIR ESTUDIANTE EN UNA ACTIVIDAD
+    // RF-06: INSCRIBIR ESTUDIANTE EN UNA ACTIVIDAD
     public void inscribir(
             long actividadId,
             String correoEstudiante) {
@@ -66,7 +66,7 @@ public class InscripcionService {
         }
     }
 
-    // CANCELAR INSCRIPCION Y LIBERAR CUPO
+    // RF-06: CANCELAR INSCRIPCION Y LIBERAR CUPO
     @Transactional
     public void cancelar(
             long actividadId,
@@ -146,6 +146,101 @@ public class InscripcionService {
 
             throw new IllegalStateException(
                 "No se pudo guardar el historial de cancelación."
+            );
+        }
+    }
+
+    // RF-07.01: GUARDAR AVISO DE LLEGADA
+    public void avisarLlegada(
+            long actividadId,
+            String correoEstudiante) {
+
+        Actividad actividad = actividadRepository
+            .buscarPorId(actividadId)
+            .orElseThrow(() ->
+                new IllegalArgumentException(
+                    "La actividad no existe."
+                )
+            );
+
+        LocalDateTime ahora = LocalDateTime.now(ZONA);
+
+        LocalDateTime inicio = LocalDateTime.of(
+            actividad.fecha(),
+            actividad.horaInicio()
+        );
+
+        LocalDateTime fin = LocalDateTime.of(
+            actividad.fecha(),
+            actividad.horaFin()
+        );
+
+        // SOLO PERMITIR AVISAR DURANTE LA ACTIVIDAD
+        if (ahora.isBefore(inicio) || !ahora.isBefore(fin)) {
+
+            throw new IllegalArgumentException(
+                "Solo puedes avisar tu llegada " +
+                "durante el horario de la actividad."
+            );
+        }
+
+        if (inscripcionRepository.avisarLlegada(
+                actividadId,
+                correoEstudiante,
+                ahora
+        ) != 1) {
+
+            throw new IllegalArgumentException(
+                "No tienes una inscripción pendiente " +
+                "de avisar llegada."
+            );
+        }
+    }
+
+    // RF-07.03: VERIFICAR LLEGADA DEL ESTUDIANTE
+    public void verificarLlegada(
+            long inscripcionId,
+            long actividadId,
+            String correoOrganizador) {
+
+        // COMPROBAR QUE LA ACTIVIDAD PERTENECE AL ORGANIZADOR
+        Actividad actividad = actividadRepository
+            .buscarPropiaPorId(
+                actividadId,
+                correoOrganizador
+            )
+            .orElseThrow(() ->
+                new IllegalArgumentException(
+                    "No organizas esta actividad."
+                )
+            );
+
+        LocalDateTime ahora = LocalDateTime.now(ZONA);
+
+        LocalDateTime inicio = LocalDateTime.of(
+            actividad.fecha(),
+            actividad.horaInicio()
+        );
+
+        // NO VERIFICAR ANTES DEL INICIO
+        if (ahora.isBefore(inicio)) {
+
+            throw new IllegalArgumentException(
+                "La actividad aún no comienza."
+            );
+        }
+
+        // ACTUALIZAR SOLO AVISOS PENDIENTES
+        if (inscripcionRepository.verificarLlegada(
+                inscripcionId,
+                actividadId,
+                correoOrganizador,
+                ahora
+        ) != 1) {
+
+            throw new IllegalArgumentException(
+                "No existe un aviso de llegada pendiente " +
+                "para este estudiante."
             );
         }
     }

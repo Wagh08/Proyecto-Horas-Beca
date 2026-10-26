@@ -20,14 +20,12 @@ public class PantallasController {
 
     private static final Set<String> PAGINAS = Set.of(
         "inicio-estudiante",
-        "asistencia-actividad",
         "qr-actividad",
         "progreso",
         "perfil-estudiante",
         "inicio-organizador",
         "crear-actividad",
         "solicitudes",
-        "verificar-llegadas",
         "escanear-qr",
         "perfil-organizador"
     );
