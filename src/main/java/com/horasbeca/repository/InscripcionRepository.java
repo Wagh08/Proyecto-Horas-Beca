@@ -1,13 +1,17 @@
+
 package com.horasbeca.repository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.horasbeca.model.Inscripcion;
+import com.horasbeca.model.Participante;
+import com.horasbeca.model.Cancelacion;
 
 @Repository
 public class InscripcionRepository {
@@ -186,5 +190,99 @@ public class InscripcionRepository {
             actividadId,
             correoEstudiante
         );
+    }
+
+    // LISTAR ACTIVIDADES CON INSCRIPCION ACTIVA
+    public List<Long> listarIdsActivos(String correoEstudiante) {
+
+        String sql =
+            "SELECT i.actividad_id " +
+            "FROM inscripciones i " +
+            "JOIN usuarios u ON u.id = i.estudiante_id " +
+            "WHERE u.correo = ? " +
+            "AND i.estado IN (" +
+            "'INSCRITA', " +
+            "'LLEGADA_AVISADA', " +
+            "'LLEGADA_VERIFICADA')";
+
+        return jdbcTemplate.queryForList(
+            sql,
+            Long.class,
+            correoEstudiante
+        );
+    }
+
+    // LISTAR PARTICIPANTES DE UNA ACTIVIDAD
+    public List<Participante> listarParticipantes(long actividadId) {
+
+        String sql =
+            "SELECT i.id, p.nombre, p.carne, i.estado, " +
+            "i.aviso_llegada_en, i.verificado_en " +
+            "FROM inscripciones i " +
+            "JOIN perfiles_estudiantes p " +
+            "ON p.usuario_id = i.estudiante_id " +
+            "WHERE i.actividad_id = ? " +
+            "AND i.estado <> 'CANCELADA' " +
+            "ORDER BY i.inscrito_en, i.id";
+
+        return jdbcTemplate.query(
+            sql,
+            (resultado, fila) -> new Participante(
+                resultado.getLong("id"),
+                resultado.getString("nombre"),
+                resultado.getString("carne"),
+                resultado.getString("estado"),
+                resultado.getString("aviso_llegada_en"),
+                resultado.getString("verificado_en")
+            ),
+            actividadId
+        );
+    }
+
+    // LISTAR HISTORIAL DE CANCELACIONES
+    public List<Cancelacion> listarCancelaciones(long actividadId) {
+
+        String sql =
+            "SELECT p.nombre, p.carne, h.cancelado_en, " +
+            "h.motivo, h.tardia " +
+            "FROM historial_cancelaciones h " +
+            "JOIN inscripciones i " +
+            "ON i.id = h.inscripcion_id " +
+            "JOIN perfiles_estudiantes p " +
+            "ON p.usuario_id = i.estudiante_id " +
+            "WHERE i.actividad_id = ? " +
+            "ORDER BY h.cancelado_en DESC, h.id DESC";
+
+        return jdbcTemplate.query(
+            sql,
+            (resultado, fila) -> new Cancelacion(
+                resultado.getString("nombre"),
+                resultado.getString("carne"),
+                resultado.getString("cancelado_en"),
+                resultado.getString("motivo"),
+                resultado.getInt("tardia") == 1
+            ),
+            actividadId
+        );
+    }
+
+    // CONTAR CANCELACIONES TARDIAS
+    public int contarCancelacionesTardias(long actividadId) {
+
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM historial_cancelaciones h " +
+            "JOIN inscripciones i " +
+            "ON i.id = h.inscripcion_id " +
+            "WHERE i.actividad_id = ? " +
+            "AND h.tardia = 1";
+
+        Integer cantidad = jdbcTemplate.queryForObject(
+            sql,
+            Integer.class,
+            actividadId
+        );
+
+        return cantidad == null ? 0 : cantidad;
     }
 }

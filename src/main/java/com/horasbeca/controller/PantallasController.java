@@ -26,7 +26,6 @@ public class PantallasController {
         "perfil-estudiante",
         "inicio-organizador",
         "crear-actividad",
-        "participantes",
         "solicitudes",
         "verificar-llegadas",
         "escanear-qr",
@@ -44,6 +43,7 @@ public class PantallasController {
         this.metaAnualService = metaAnualService;
     }
 
+    // REDIRIGIR SEGUN EL ROL DEL USUARIO
     @GetMapping("/")
     public String inicio(Authentication autenticacion) {
 
@@ -58,6 +58,7 @@ public class PantallasController {
             : "redirect:/inicio-estudiante.html";
     }
 
+    // MOSTRAR PAGINAS GENERALES
     @GetMapping("/{pagina}.html")
     public String mostrarPagina(
             @PathVariable("pagina") String pagina,
@@ -70,6 +71,7 @@ public class PantallasController {
             );
         }
 
+        // PERFIL DEL ESTUDIANTE
         if (pagina.equals("perfil-estudiante")) {
 
             PerfilEstudiante perfil = perfilRepository
@@ -91,6 +93,7 @@ public class PantallasController {
             );
         }
 
+        // PERFIL DEL ORGANIZADOR
         if (pagina.equals("perfil-organizador")) {
 
             modelo.addAttribute(
@@ -111,6 +114,7 @@ public class PantallasController {
         return pagina;
     }
 
+    // PAGINA DE INICIO DE SESION
     @GetMapping("/login")
     public String login() {
         return "login";

@@ -1,6 +1,10 @@
 
 package com.horasbeca.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.horasbeca.model.Actividad;
+import com.horasbeca.model.Inscripcion;
 import com.horasbeca.repository.ActividadRepository;
 import com.horasbeca.repository.InscripcionRepository;
 import com.horasbeca.service.ActividadService;
@@ -20,6 +25,9 @@ import com.horasbeca.service.UbicacionService;
 
 @Controller
 public class ActividadController {
+
+    private static final ZoneId ZONA =
+        ZoneId.of("America/Guatemala");
 
     private final ActividadRepository actividadRepository;
     private final ActividadService actividadService;
@@ -73,18 +81,31 @@ public class ActividadController {
         }
     }
 
-    // GESTION DE ACTIVIDADES
+    // GESTION DE ACTIVIDADES DEL ORGANIZADOR
     @GetMapping("/gestion.html")
     public String gestion(
             Authentication autenticacion,
             Model modelo) {
 
-        modelo.addAttribute(
-            "actividades",
+        List<Actividad> actividades =
             actividadRepository.listarPropias(
                 autenticacion.getName()
-            )
-        );
+            );
+
+        Map<Long, Integer> alertas = new HashMap<>();
+
+        for (Actividad actividad : actividades) {
+            alertas.put(
+                actividad.id(),
+                inscripcionRepository
+                    .contarCancelacionesTardias(
+                        actividad.id()
+                    )
+            );
+        }
+
+        modelo.addAttribute("actividades", actividades);
+        modelo.addAttribute("alertas", alertas);
 
         return "gestion";
     }
@@ -104,6 +125,7 @@ public class ActividadController {
             @RequestParam(name = "ubicacion", defaultValue = "")
             String ubicacion,
 
+            Authentication autenticacion,
             Model modelo) {
 
         modelo.addAttribute("fecha", fecha);
@@ -111,24 +133,15 @@ public class ActividadController {
         modelo.addAttribute("horasMinimas", horasMinimas);
         modelo.addAttribute("ubicacion", ubicacion);
 
+        List<Actividad> actividades;
+
         try {
-            modelo.addAttribute(
-                "actividades",
-                actividadService
-                    .filtrarDisponibles(
-                        fecha,
-                        turno,
-                        horasMinimas
-                    )
-                    .stream()
-                    .filter(actividad ->
-                        ubicacionService.coincide(
-                            actividad.ubicacion(),
-                            ubicacion
-                        )
-                    )
-                    .toList()
-            );
+            actividades = actividadService
+                .filtrarDisponibles(
+                    fecha,
+                    turno,
+                    horasMinimas
+                );
 
         } catch (IllegalArgumentException excepcion) {
 
@@ -137,20 +150,52 @@ public class ActividadController {
                 excepcion.getMessage()
             );
 
-            modelo.addAttribute(
-                "actividades",
-                actividadRepository
-                    .listarDisponibles()
-                    .stream()
-                    .filter(actividad ->
-                        ubicacionService.coincide(
-                            actividad.ubicacion(),
-                            ubicacion
+            actividades =
+                actividadRepository.listarDisponibles();
+        }
+
+        actividades = actividades.stream()
+            .filter(actividad ->
+                ubicacionService.coincide(
+                    actividad.ubicacion(),
+                    ubicacion
+                )
+            )
+            .toList();
+
+        Map<Long, Integer> cuposDisponibles =
+            new HashMap<>();
+
+        for (Actividad actividad : actividades) {
+
+            cuposDisponibles.put(
+                actividad.id(),
+                Math.max(
+                    0,
+                    actividad.cupoMaximo()
+                        - inscripcionRepository.ocupados(
+                            actividad.id()
                         )
-                    )
-                    .toList()
+                )
             );
         }
+
+        modelo.addAttribute(
+            "actividades",
+            actividades
+        );
+
+        modelo.addAttribute(
+            "cuposDisponibles",
+            cuposDisponibles
+        );
+
+        modelo.addAttribute(
+            "idsInscritas",
+            inscripcionRepository.listarIdsActivos(
+                autenticacion.getName()
+            )
+        );
 
         return "actividades";
     }
@@ -167,25 +212,47 @@ public class ActividadController {
             return "redirect:/actividades.html";
         }
 
-        Actividad actividad = actividadRepository
-            .buscarDisponiblePorId(id)
-            .orElseThrow(() ->
-                new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Actividad no disponible"
+        Actividad actividad =
+            actividadRepository.buscarPorId(id)
+                .orElseThrow(() ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Actividad no encontrada"
+                    )
+                );
+
+        Inscripcion inscripcion =
+            inscripcionRepository.buscar(
+                id,
+                autenticacion.getName()
+            ).orElse(null);
+
+        boolean noHaComenzado =
+            LocalDateTime.now(ZONA).isBefore(
+                LocalDateTime.of(
+                    actividad.fecha(),
+                    actividad.horaInicio()
                 )
             );
 
-        modelo.addAttribute("actividad", actividad);
+        if (!noHaComenzado &&
+                (inscripcion == null ||
+                 inscripcion.estado().equals("CANCELADA"))) {
+
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Actividad no disponible"
+            );
+        }
+
+        modelo.addAttribute(
+            "actividad",
+            actividad
+        );
 
         modelo.addAttribute(
             "inscripcion",
-            inscripcionRepository
-                .buscar(
-                    id,
-                    autenticacion.getName()
-                )
-                .orElse(null)
+            inscripcion
         );
 
         modelo.addAttribute(
@@ -197,6 +264,57 @@ public class ActividadController {
             )
         );
 
+        modelo.addAttribute(
+            "noHaComenzado",
+            noHaComenzado
+        );
+
         return "detalle-actividad";
+    }
+
+    // MOSTRAR PARTICIPANTES Y CANCELACIONES
+    @GetMapping("/participantes.html")
+    public String participantes(
+            @RequestParam(name = "id", required = false)
+            Long id,
+            Authentication autenticacion,
+            Model modelo) {
+
+        if (id == null || id < 1) {
+            return "redirect:/gestion.html";
+        }
+
+        Actividad actividad =
+            actividadRepository.buscarPropiaPorId(
+                id,
+                autenticacion.getName()
+            ).orElseThrow(() ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Actividad no encontrada"
+                )
+            );
+
+        modelo.addAttribute(
+            "actividad",
+            actividad
+        );
+
+        modelo.addAttribute(
+            "participantes",
+            inscripcionRepository.listarParticipantes(id)
+        );
+
+        modelo.addAttribute(
+            "cancelaciones",
+            inscripcionRepository.listarCancelaciones(id)
+        );
+
+        modelo.addAttribute(
+            "ocupados",
+            inscripcionRepository.ocupados(id)
+        );
+
+        return "participantes";
     }
 }

@@ -1,40 +1,154 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Participantes · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/asistencia.css"
+          th:href="@{/css/asistencia.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
+
 <body data-rol="organizador" data-pagina="gestion">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-actividades" id="contenido-pagina">
-    <a class="enlace-actividad" href="gestion.html">Volver a gestión</a>
+    <main class="contenido-app pagina-actividades"
+          id="contenido-pagina">
 
-    <section class="introduccion">
-        <h2>Apoyo en biblioteca</h2>
-        <p>Participantes inscritos · 6 de 8 cupos ocupados</p>
-    </section>
+        <!-- VOLVER A GESTION -->
+        <a class="enlace-actividad"
+           th:href="@{/gestion.html}">
+            Volver a gestión
+        </a>
 
-    <section class="tarjeta-actividad" aria-labelledby="titulo-participantes">
-        <h3 id="titulo-participantes">Participantes</h3>
-        <div class="persona"><div><strong>Andrea López</strong><span>Carné 12345</span></div><span>Inscrita</span></div>
-        <div class="persona"><div><strong>Carlos Pérez</strong><span>Carné 12346</span></div><span>Inscrito</span></div>
-        <div class="persona"><div><strong>María Gómez</strong><span>Carné 12347</span></div><span>Inscrita</span></div>
-    </section>
-    <a class="accion-asistencia" href="verificar-llegadas.html">Ver llegadas</a>
-</main>
+        <!-- INFORMACION DE LA ACTIVIDAD -->
+        <section class="introduccion">
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+            <h2 th:text="${actividad.nombre}">
+                Actividad
+            </h2>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+            <p th:text="|${ocupados} de ${actividad.cupoMaximo} cupos ocupados|">
+                Cupos ocupados
+            </p>
+
+        </section>
+
+        <!-- PARTICIPANTES ACTUALES -->
+        <section class="tarjeta-actividad"
+                 aria-labelledby="titulo-participantes">
+
+            <h3 id="titulo-participantes">
+                Participantes actuales
+            </h3>
+
+            <!-- SIN PARTICIPANTES -->
+            <p class="texto-secundario"
+               th:if="${#lists.isEmpty(participantes)}">
+                Todavía no hay estudiantes inscritos.
+            </p>
+
+            <!-- LISTADO DE PARTICIPANTES -->
+            <div class="persona"
+                 th:each="participante : ${participantes}">
+
+                <div>
+                    <strong th:text="${participante.nombre}">
+                        Nombre
+                    </strong>
+
+                    <span th:text="|Carné ${participante.carne}|">
+                        Carné
+                    </span>
+                </div>
+
+                <!-- ESTADO DEL PARTICIPANTE -->
+                <span
+                    th:text="${participante.estado == 'INSCRITA' ? 'Inscrito' : (participante.estado == 'LLEGADA_AVISADA' ? 'Avisó su llegada' : 'Llegada verificada')}">
+                    Estado
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- HISTORIAL DE CANCELACIONES -->
+        <section class="tarjeta-actividad"
+                 aria-labelledby="titulo-cancelaciones">
+
+            <h3 id="titulo-cancelaciones">
+                Cancelaciones registradas
+            </h3>
+
+            <!-- SIN CANCELACIONES -->
+            <p class="texto-secundario"
+               th:if="${#lists.isEmpty(cancelaciones)}">
+                No hay cancelaciones registradas.
+            </p>
+
+            <!-- LISTADO DE CANCELACIONES -->
+            <div class="fila-persona"
+                 th:each="cancelacion : ${cancelaciones}">
+
+                <strong th:text="${cancelacion.nombre}">
+                    Nombre
+                </strong>
+
+                <span th:text="|Carné ${cancelacion.carne} · ${cancelacion.canceladoEn}|">
+                    Carné y fecha
+                </span>
+
+                <!-- CANCELACION TARDIA -->
+                <span
+                    th:if="${cancelacion.tardia}"
+                    class="mensaje-actividad mensaje-actividad--error">
+                    Canceló una hora o menos antes del inicio
+                </span>
+
+                <!-- JUSTIFICACION -->
+                <span
+                    th:if="${cancelacion.motivo != null}"
+                    th:text="|Justificación: ${cancelacion.motivo}|">
+                    Justificación
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
+
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>

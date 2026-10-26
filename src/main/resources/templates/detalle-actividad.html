@@ -1,16 +1,24 @@
 
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="../static/css/tema.css"
+    <title>Detalle de actividad · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
           th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css"
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
           th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css"
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
           th:href="@{/css/actividades.css}">
 
     <script src="../static/js/tema.js"
@@ -27,6 +35,7 @@
     <main class="contenido-app pagina-actividades"
           id="contenido-pagina">
 
+        <!-- VOLVER A ACTIVIDADES -->
         <a class="enlace-actividad"
            th:href="@{/actividades.html}">
             Volver a actividades
@@ -45,7 +54,7 @@
             </h2>
 
             <p th:text="${actividad.descripcion}">
-                Descripción
+                Descripción de la actividad
             </p>
 
             <dl class="ficha-datos">
@@ -86,6 +95,13 @@
                 </div>
 
                 <div>
+                    <dt>Cupos disponibles</dt>
+                    <dd th:text="${cuposDisponibles}">
+                        Cupos disponibles
+                    </dd>
+                </div>
+
+                <div>
                     <dt>Horas acreditables</dt>
                     <dd th:text="|${actividad.horasAcreditables} horas beca|">
                         Horas
@@ -100,6 +116,7 @@
                 </div>
 
             </dl>
+
         </article>
 
         <!-- MENSAJE DE INSCRIPCION EXITOSA -->
@@ -114,12 +131,19 @@
            th:if="${param.errorInscripcion}"
            role="alert">
             No fue posible inscribirte.
-            Revisa si aún hay cupos y si la actividad no ha comenzado.
+            Revisa si aún hay cupos y si la actividad
+            no ha comenzado.
+        </p>
+
+        <!-- ESTADO DE INSCRIPCION -->
+        <p class="etiqueta-actividad"
+           th:if="${inscripcion != null and inscripcion.estado != 'CANCELADA'}">
+            Ya estás inscrito en esta actividad.
         </p>
 
         <!-- FORMULARIO PARA INSCRIBIRSE -->
         <form
-            th:if="${(inscripcion == null or inscripcion.estado == 'CANCELADA') and cuposDisponibles > 0}"
+            th:if="${noHaComenzado and (inscripcion == null or inscripcion.estado == 'CANCELADA') and cuposDisponibles > 0}"
             th:action="@{/actividades/{id}/inscribir(id=${actividad.id})}"
             method="post">
 
@@ -127,14 +151,16 @@
                    th:name="${_csrf.parameterName}"
                    th:value="${_csrf.token}">
 
-            <button class="boton-actividad" type="submit">
+            <button class="boton-actividad"
+                    type="submit">
                 Inscribirme
             </button>
+
         </form>
 
         <!-- MENSAJE DE CUPOS AGOTADOS -->
         <p class="texto-secundario"
-           th:if="${cuposDisponibles == 0 and (inscripcion == null or inscripcion.estado == 'CANCELADA')}">
+           th:if="${noHaComenzado and cuposDisponibles == 0 and (inscripcion == null or inscripcion.estado == 'CANCELADA')}">
             Cupos agotados.
         </p>
 
@@ -146,7 +172,7 @@
             el cupo volvió a estar disponible.
         </p>
 
-        <!-- MENSAJE DE ERROR AL CANCELAR -->
+        <!-- MENSAJE DE ERROR DE CANCELACION -->
         <p class="mensaje-actividad mensaje-actividad--error"
            th:if="${param.errorCancelacion}"
            role="alert">
@@ -158,7 +184,7 @@
 
         <!-- FORMULARIO PARA CANCELAR INSCRIPCION -->
         <form
-            th:if="${inscripcion != null and inscripcion.estado == 'INSCRITA'}"
+            th:if="${noHaComenzado and inscripcion != null and inscripcion.estado == 'INSCRITA'}"
             th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}"
             method="post"
             class="formulario-actividad">
@@ -181,10 +207,19 @@
 
             </div>
 
-            <button class="boton-actividad" type="submit">
+            <button class="boton-actividad"
+                    type="submit">
                 Cancelar mi inscripción
             </button>
+
         </form>
+
+        <!-- ACTIVIDAD YA INICIADA -->
+        <p class="texto-secundario"
+           th:if="${!noHaComenzado and inscripcion != null and inscripcion.estado != 'CANCELADA'}">
+            Esta actividad ya comenzó.
+            Tu inscripción permanece registrada.
+        </p>
 
     </main>
 
