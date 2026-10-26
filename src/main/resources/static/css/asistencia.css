@@ -1,3 +1,4 @@
+
 .pagina-asistencia {
     display: grid;
     gap: 18px;
@@ -117,4 +118,65 @@
 .accion-asistencia:focus-visible {
     outline: 2px solid var(--color-principal);
     outline-offset: 3px;
+}
+
+.imagen-qr {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: var(--radio-control);
+}
+
+.codigo-qr-texto {
+    overflow-wrap: anywhere;
+    font-size: 0.85rem;
+}
+
+.visor-camara video {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    border-radius: var(--radio-control);
+    object-fit: cover;
+}
+
+.visor-camara video:not([srcObject]) {
+    min-height: 180px;
+}
+
+.panel-asistencia label {
+    display: block;
+    margin: 16px 0 8px;
+    font-weight: 700;
+}
+
+#codigo-qr {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-control);
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.accion-asistencia:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.panel-asistencia p.mensaje-actividad--error {
+    background: #982b3b;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.panel-asistencia p.mensaje-actividad--exito {
+    background: #096b50;
+    color: #ffffff;
+    font-weight: 700;
 }

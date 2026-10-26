@@ -218,15 +218,23 @@
             Tu inscripción permanece registrada.
         </p>
 
-        <!-- RF-07.01: VER MI ASISTENCIA -->
+        <!-- RF07.01: VER MI ASISTENCIA -->
         <a class="boton-actividad"
            th:if="${inscripcion != null and inscripcion.estado != 'CANCELADA'}"
            th:href="@{/asistencia-actividad.html(id=${actividad.id})}">
             Ver mi asistencia
         </a>
 
+        <!-- RF08.01: VER QR DE LA ACTIVIDAD -->
+        <a class="boton-actividad"
+           th:if="${inscripcion != null and inscripcion.estado == 'LLEGADA_VERIFICADA'}"
+           th:href="@{/qr-actividad.html(id=${actividad.id})}">
+            Ver QR de esta actividad
+        </a>
+
     </main>
 
+    <!-- NAVEGACION INFERIOR -->
     <nav class="navegacion-inferior"
          aria-label="Navegación principal">
     </nav>

@@ -84,28 +84,40 @@ public class ConfiguracionSeguridad {
                     "/api/ubicaciones"
                 ).hasRole("ESTUDIANTE")
 
-                // RF-06: INSCRIBIRSE EN UNA ACTIVIDAD
+                // RF06: INSCRIBIRSE
                 .requestMatchers(
                     HttpMethod.POST,
                     "/actividades/*/inscribir"
                 ).hasRole("ESTUDIANTE")
 
-                // RF-06: CANCELAR INSCRIPCION
+                // RF06: CANCELAR INSCRIPCION
                 .requestMatchers(
                     HttpMethod.POST,
                     "/actividades/*/cancelar"
                 ).hasRole("ESTUDIANTE")
 
-                // RF-07.01: AVISAR LLEGADA
+                // RF07.01: AVISAR LLEGADA
                 .requestMatchers(
                     HttpMethod.POST,
                     "/actividades/*/avisar-llegada"
                 ).hasRole("ESTUDIANTE")
 
-                // RF-07.03: VERIFICAR LLEGADA
+                // RF07.03: VERIFICAR LLEGADA
                 .requestMatchers(
                     HttpMethod.POST,
                     "/inscripciones/*/verificar-llegada"
+                ).hasRole("ORGANIZADOR")
+
+                // RF08.01: GENERAR QR
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/actividades/*/generar-qr"
+                ).hasRole("ESTUDIANTE")
+
+                // RF08.03: VALIDAR QR
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/actividades/*/validar-qr"
                 ).hasRole("ORGANIZADOR")
 
                 // DENEGAR RUTAS NO AUTORIZADAS

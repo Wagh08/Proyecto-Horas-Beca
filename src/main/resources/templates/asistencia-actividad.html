@@ -123,11 +123,12 @@
 
             </div>
 
-            <!-- PASO 4: QR FUTURO -->
+            <!-- PASO 4: GENERACION DEL QR -->
             <div class="paso-asistencia">
 
                 <span class="marca-paso"
-                      aria-hidden="true">
+                      aria-hidden="true"
+                      th:text="${inscripcion.estado == 'LLEGADA_VERIFICADA' ? '✓' : '4'}">
                     4
                 </span>
 
@@ -135,8 +136,9 @@
                     <strong>QR al finalizar</strong>
 
                     <small>
-                        El QR y la acreditación se implementarán
-                        en el siguiente requisito.
+                        Cuando termine la actividad y se
+                        verifique tu llegada, podrás
+                        generar tu código QR.
                     </small>
                 </div>
 
@@ -181,10 +183,18 @@
                 el horario de la actividad.
             </p>
 
+            <!-- RF08.01: BOTON PARA VER EL QR -->
+            <a class="accion-asistencia"
+               th:if="${inscripcion.estado == 'LLEGADA_VERIFICADA'}"
+               th:href="@{/qr-actividad.html(id=${actividad.id})}">
+                Ver mi QR
+            </a>
+
         </section>
 
     </main>
 
+    <!-- NAVEGACION INFERIOR -->
     <nav class="navegacion-inferior"
          aria-label="Navegación principal">
     </nav>

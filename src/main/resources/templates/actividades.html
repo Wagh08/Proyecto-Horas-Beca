@@ -1,9 +1,11 @@
 
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Horas Beca</title>
 
@@ -20,7 +22,9 @@
           th:href="@{/css/actividades.css}">
 
     <script src="../static/js/tema.js"
-            th:src="@{/js/tema.js}"></script>
+            th:src="@{/js/tema.js}">
+    </script>
+
 </head>
 
 <body data-rol="estudiante" data-pagina="actividades">
@@ -35,11 +39,63 @@
 
         <!-- INTRODUCCION -->
         <section class="introduccion">
+
             <h2>Encuentra una actividad</h2>
+
             <p>
                 Consulta las oportunidades disponibles
-                y elige la que mejor se adapte a ti.
+                y revisa las actividades en las que
+                ya estás inscrito.
             </p>
+
+        </section>
+
+        <!-- RF08.01: MIS ACTIVIDADES -->
+        <section class="bloque-actividades"
+                 aria-labelledby="titulo-mis-actividades">
+
+            <h2 id="titulo-mis-actividades">
+                Mis actividades
+            </h2>
+
+            <p class="texto-secundario"
+               th:if="${#lists.isEmpty(misActividades)}">
+                Todavía no tienes actividades inscritas.
+            </p>
+
+            <article class="tarjeta-actividad"
+                     th:each="actividad : ${misActividades}">
+
+                <span class="etiqueta-actividad">
+                    Ya estás inscrito
+                </span>
+
+                <h3 th:text="${actividad.nombre}">
+                    Nombre de la actividad
+                </h3>
+
+                <p>
+                    <time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|"
+                          th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">
+                        Fecha y horario
+                    </time>
+                </p>
+
+                <p th:text="${actividad.ubicacion}">
+                    Ubicación
+                </p>
+
+                <p th:text="|${actividad.horasAcreditables} horas beca|">
+                    Horas beca
+                </p>
+
+                <a class="enlace-actividad"
+                   th:href="@{/detalle-actividad.html(id=${actividad.id})}">
+                    Ver detalles y asistencia
+                </a>
+
+            </article>
+
         </section>
 
         <!-- FORMULARIO DE FILTROS -->
@@ -48,20 +104,26 @@
               method="get">
 
             <div class="campo">
-                <label for="filtro-fecha">Fecha</label>
+
+                <label for="filtro-fecha">
+                    Fecha
+                </label>
 
                 <input id="filtro-fecha"
                        name="fecha"
                        type="date"
                        th:value="${fecha}">
+
             </div>
 
             <div class="campo">
+
                 <label for="filtro-turno">
                     Horario de inicio
                 </label>
 
-                <select id="filtro-turno" name="turno">
+                <select id="filtro-turno"
+                        name="turno">
 
                     <option value="">
                         Cualquier horario
@@ -78,9 +140,11 @@
                     </option>
 
                 </select>
+
             </div>
 
             <div class="campo">
+
                 <label for="filtro-horas">
                     Mínimo de horas beca
                 </label>
@@ -92,6 +156,7 @@
                        step="1"
                        th:value="${horasMinimas}"
                        placeholder="Cualquier cantidad">
+
             </div>
 
             <div class="campo campo-ubicacion">
@@ -120,7 +185,8 @@
 
             </div>
 
-            <button class="boton-actividad" type="submit">
+            <button class="boton-actividad"
+                    type="submit">
                 Aplicar filtros
             </button>
 
@@ -151,7 +217,6 @@
                 No hay actividades disponibles por el momento.
             </p>
 
-            <!-- TARJETA DE CADA ACTIVIDAD -->
             <article class="tarjeta-actividad"
                      th:each="actividad : ${actividades}">
 
@@ -204,6 +269,7 @@
 
     </main>
 
+    <!-- NAVEGACION INFERIOR -->
     <nav class="navegacion-inferior"
          aria-label="Navegación principal">
     </nav>

@@ -14,31 +14,32 @@ import org.springframework.web.server.ResponseStatusException;
 import com.horasbeca.model.PerfilEstudiante;
 import com.horasbeca.repository.PerfilRepository;
 import com.horasbeca.service.MetaAnualService;
+import com.horasbeca.repository.AcreditacionRepository;
+import com.horasbeca.service.ResumenHorasService;
 
 @Controller
 public class PantallasController {
 
     private static final Set<String> PAGINAS = Set.of(
         "inicio-estudiante",
-        "qr-actividad",
         "progreso",
         "perfil-estudiante",
         "inicio-organizador",
         "crear-actividad",
         "solicitudes",
-        "escanear-qr",
         "perfil-organizador"
     );
 
     private final PerfilRepository perfilRepository;
     private final MetaAnualService metaAnualService;
+    private final AcreditacionRepository acreditacionRepository;
+    private final ResumenHorasService resumenHorasService;
 
-    public PantallasController(
-            PerfilRepository perfilRepository,
-            MetaAnualService metaAnualService) {
-
+    public PantallasController(PerfilRepository perfilRepository, MetaAnualService metaAnualService, AcreditacionRepository acreditacionRepository, ResumenHorasService resumenHorasService) {
         this.perfilRepository = perfilRepository;
         this.metaAnualService = metaAnualService;
+        this.acreditacionRepository = acreditacionRepository;
+        this.resumenHorasService = resumenHorasService;
     }
 
     // REDIRIGIR SEGUN EL ROL DEL USUARIO
@@ -67,6 +68,15 @@ public class PantallasController {
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND
             );
+        }
+
+        if (pagina.equals("inicio-estudiante") || pagina.equals("progreso")) {
+            ResumenHorasService.Resumen resumen = resumenHorasService.calcular(autenticacion.getName());
+            modelo.addAttribute("resumen", resumen);
+
+            if (pagina.equals("progreso")) {
+                modelo.addAttribute("historial", acreditacionRepository.listarAnuales(autenticacion.getName(), resumen.anio()));
+            }
         }
 
         // PERFIL DEL ESTUDIANTE

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" data-theme="dark">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
+    <title>Inicio · Horas Beca</title>
     <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
     <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
     <link rel="stylesheet" href="../static/css/inicio.css" th:href="@{/css/inicio.css}">
@@ -15,46 +15,32 @@
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
-
     <main class="contenido-app inicio" id="contenido-pagina">
         <section class="saludo">
-            <h2>Hola, Andrea</h2>
+            <h2 th:text="|Hola, ${resumen.nombre()}|">Hola</h2>
             <p>Encuentra tu próxima oportunidad de horas beca.</p>
         </section>
 
         <section class="resumen-inicio" aria-labelledby="titulo-horas">
-            <p id="titulo-horas">Tus horas beca este año</p>
-            <p class="cifra">18 de 50 horas</p>
-            <p class="detalle">Te faltan 32 horas para completar tu meta.</p>
-            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" aria-valuemax="50" aria-valuenow="18">
-                <span></span>
+            <p id="titulo-horas" th:text="|Tus horas beca en ${resumen.anio()}|">Tus horas beca este año</p>
+            <p class="cifra" th:text="|${resumen.acreditadas()} de ${resumen.meta()} horas|">Horas acreditadas</p>
+            <p class="detalle" th:text="|Te faltan ${resumen.pendientes()} horas para completar tu meta.|">Horas pendientes</p>
+            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.anchoBarra() * resumen.meta() / 100}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
+                <span th:style="|--avance: ${resumen.anchoBarra()}%;|"></span>
             </div>
-            <p>36 % completado</p>
-            <a href="progreso.html">Ver mi progreso</a>
+            <p th:text="|${resumen.porcentaje()} % completado|">Progreso</p>
+            <a th:href="@{/progreso.html}">Ver mi progreso</a>
         </section>
 
-        <section class="seccion-inicio" aria-labelledby="titulo-proximas">
-            <h2 id="titulo-proximas">Próximas actividades</h2>
-
+        <section class="seccion-inicio" aria-labelledby="titulo-actividades">
+            <h2 id="titulo-actividades">Actividades</h2>
             <article class="tarjeta-inicio">
-                <span class="etiqueta">Inscrita</span>
-                <h3>Apoyo en biblioteca</h3>
-                <p><time datetime="2026-10-22T09:00">Jueves 22 de octubre, 9:00 a 11:00</time></p>
-                <p>Biblioteca central · 2 horas beca</p>
-                <a href="actividades.html">Ver actividades</a>
-            </article>
-
-            <article class="tarjeta-inicio">
-                <span class="etiqueta">Disponible</span>
-                <h3>Jornada de bienvenida</h3>
-                <p><time datetime="2026-10-23T14:00">Viernes 23 de octubre, 14:00 a 16:00</time></p>
-                <p>Edificio principal · 4 horas beca</p>
-                <a href="actividades.html">Explorar actividades</a>
+                <p>Consulta las actividades disponibles y tus inscripciones.</p>
+                <a th:href="@{/actividades.html}">Ver actividades</a>
             </article>
         </section>
     </main>
-
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
-
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script></body>
+    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+</body>
 </html>

@@ -1,43 +1,165 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <link rel="stylesheet" href="../static/css/asistencia.css" th:href="@{/css/asistencia.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Validar QR · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/asistencia.css"
+          th:href="@{/css/asistencia.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
+
+    <!-- BIBLIOTECA PARA LEER CODIGOS QR -->
+    <script src="../static/js/zxing-browser.min.js"
+            th:src="@{/js/zxing-browser.min.js}"
+            defer></script>
+
+    <!-- LOGICA DEL LECTOR QR -->
+    <script src="../static/js/lector-qr.js"
+            th:src="@{/js/lector-qr.js}"
+            defer></script>
+
 </head>
+
 <body data-rol="organizador" data-pagina="gestion">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-asistencia" id="contenido-pagina">
-        <a class="enlace-actividad" href="verificar-llegadas.html">Volver a llegadas</a>
+    <main class="contenido-app pagina-asistencia"
+          id="contenido-pagina">
+
+        <!-- VOLVER A LLEGADAS -->
+        <a class="enlace-actividad"
+           th:href="@{/verificar-llegadas.html(id=${actividad.id})}">
+            Volver a llegadas
+        </a>
 
         <section class="panel-asistencia">
-            <h2>Validar QR</h2>
-            <p>Apoyo en biblioteca · La lectura se habilita al finalizar la actividad.</p>
 
+            <!-- INFORMACION DE LA ACTIVIDAD -->
+            <h2 th:text="|Validar QR · ${actividad.nombre}|">
+                Validar QR
+            </h2>
+
+            <p th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">
+                Fecha y horario
+            </p>
+
+            <!-- ACTIVIDAD NO FINALIZADA -->
+            <p th:if="${!finalizada}">
+                La lectura del código QR estará disponible
+                cuando termine la actividad.
+            </p>
+
+            <!-- AREA DE LA CAMARA -->
             <div class="visor-camara">
-                <div>
-                    <strong>Área de escaneo</strong>
-                    <p>Aquí se mostrará la cámara para leer el QR del estudiante.</p>
-                </div>
+
+                <video id="video-qr"
+                       autoplay
+                       muted
+                       playsinline>
+                </video>
+
             </div>
 
-            <button class="accion-asistencia" type="button">Activar cámara</button>
-            <p>Cada participación podrá acreditarse una sola vez.</p>
+            <!-- BOTON PARA ACTIVAR CAMARA -->
+            <button class="accion-asistencia"
+                    id="activar-camara"
+                    type="button"
+                    th:disabled="${!finalizada}">
+                Activar cámara
+            </button>
+
+            <!-- ESTADO DEL LECTOR -->
+            <p id="estado-lector" role="status">
+                Apunta la cámara al código QR del estudiante.
+            </p>
+
+            <!-- FORMULARIO PARA VALIDAR QR -->
+            <form
+                th:action="@{/actividades/{id}/validar-qr(id=${actividad.id})}"
+                method="post">
+
+                <!-- TOKEN CSRF -->
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <label for="codigo-qr">
+                    Código leído o código de respaldo
+                </label>
+
+                <input id="codigo-qr"
+                       name="codigo"
+                       type="text"
+                       maxlength="36"
+                       autocomplete="off"
+                       required>
+
+                <button class="accion-asistencia"
+                        type="submit"
+                        th:disabled="${!finalizada}">
+                    Validar código
+                </button>
+
+            </form>
+
+            <!-- VALIDACION EXITOSA -->
+            <p class="mensaje-actividad mensaje-actividad--exito"
+               th:if="${resultado != null}"
+               role="status"
+               th:text="|Horas acreditadas a ${resultado.estudiante}: ${resultado.horas} horas beca.|">
+                QR válido
+            </p>
+
+            <!-- ERROR DE VALIDACION -->
+            <p class="mensaje-actividad mensaje-actividad--error"
+               th:if="${errorQr != null}"
+               role="alert"
+               th:text="${errorQr}">
+                No se pudo validar el QR.
+            </p>
+
+            <!-- INFORMACION ADICIONAL -->
+            <p>
+                Cada participación podrá acreditarse
+                una sola vez.
+            </p>
+
         </section>
+
     </main>
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+    <!-- NAVEGACION INFERIOR -->
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>

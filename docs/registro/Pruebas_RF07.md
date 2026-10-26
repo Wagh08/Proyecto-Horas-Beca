@@ -1,66 +1,38 @@
-
-# Registro de Pruebas RF-07
+# Registro de pruebas RF-07
 
 ## Proyecto
+
 Horas Beca
 
 ## Requisito
-RF-07: Confirmar y verificar la llegada
 
-## Fecha de pruebas
-2026-10-26
+RF-07: Confirmar y verificar la llegada.
 
-## Actividad utilizada
-- ID: 1
-- Nombre: Prueba RF06
-- Base de datos: SQLite
+## Fecha de las pruebas
 
-## Pruebas de inscripción
+26 de octubre de 2026.
 
-| Prueba | Resultado |
-|---|---|
-| Inscribir estudiante | Aprobada |
-| Reservar cupo | Aprobada |
-| Mostrar inscripción confirmada | Aprobada |
-| Mostrar cupos disponibles | Aprobada |
+## Entorno
 
-## Pruebas de cancelación
+Aplicación web con datos persistidos en SQLite.
 
-| Prueba | Resultado |
-|---|---|
-| Cancelar inscripción | Pendiente |
-| Liberar cupo | Pendiente |
-| Exigir justificación tardía | Pendiente |
-| Conservar historial | Pendiente |
+## Pruebas manuales
 
-## Pruebas de asistencia
+Resultado comunicado por el equipo: todas las comprobaciones de RF-07 se completaron correctamente.
 
-| Prueba | Resultado |
-|---|---|
-| Mostrar inscripción confirmada | Aprobada |
-| Impedir aviso antes del inicio | Aprobada |
-| Registrar aviso de llegada | Aprobada |
-| Guardar LLEGADA_AVISADA en SQLite | Aprobada |
-| Mostrar lista real de participantes | Aprobada |
-| Mostrar aviso pendiente de verificación | Aprobada |
-| Verificar llegada como organizador | Pendiente de confirmar en SQLite |
-| Guardar LLEGADA_VERIFICADA | Pendiente de confirmar en SQLite |
-| Impedir doble verificación | Pendiente |
-| Rechazar acceso a actividad ajena | Pendiente |
+| Comprobación | Resultado |
+| --- | --- |
+| Mostrar al estudiante su inscripción en la actividad. | Aprobada |
+| Impedir el aviso de llegada antes de iniciar la actividad. | Aprobada |
+| Permitir al estudiante inscrito avisar su llegada durante la actividad. | Aprobada |
+| Guardar `LLEGADA_AVISADA` y `aviso_llegada_en` en SQLite. | Aprobada |
+| Mostrar al organizador la lista real de participantes de su actividad. | Aprobada |
+| Mostrar al organizador el aviso de llegada pendiente de verificación. | Aprobada |
+| Permitir al organizador de la actividad verificar una llegada avisada. | Aprobada |
+| Guardar `LLEGADA_VERIFICADA` y `verificado_en` en SQLite. | Aprobada |
+| Rechazar un segundo intento de verificación de la misma llegada. | Aprobada |
+| Impedir que un organizador ajeno consulte o verifique llegadas de otra actividad. | Aprobada |
 
-## Pruebas automatizadas
+## Alcance
 
-Comando utilizado:
-
-./mvnw test
-
-Resultado: Pendiente de registrar.
-
-## Observaciones
-
-- Se comprobó la visualización de la inscripción.
-- Se implementó el aviso de llegada del estudiante.
-- Se conectó la lista de participantes con SQLite.
-- Se agregó la verificación de llegada por el organizador.
-- El QR y la acreditación de horas no forman parte de RF-07.
-- Las pruebas pendientes deben ejecutarse antes de dar por finalizada la validación.
+Este registro corresponde a las comprobaciones manuales de llegada y verificación de RF-07. Las pruebas de inscripción y cancelación corresponden a RF-06; las de generación, lectura y acreditación mediante QR corresponden a RF-08.

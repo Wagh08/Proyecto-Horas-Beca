@@ -100,7 +100,8 @@ public class InscripcionRepository {
             "motivo_cancelacion = NULL, " +
             "cancelada_tarde = 0, " +
             "aviso_llegada_en = NULL, " +
-            "verificado_en = NULL " +
+            "verificado_en = NULL, " +
+            "verificado_por_id = NULL " +
             "WHERE inscripciones.estado = 'CANCELADA'";
 
         String fecha = ahora.toLocalDate().toString();
@@ -214,29 +215,17 @@ public class InscripcionRepository {
 
     // LISTAR PARTICIPANTES DE UNA ACTIVIDAD
     public List<Participante> listarParticipantes(long actividadId) {
-
         String sql =
             "SELECT i.id, p.nombre, p.carne, i.estado, " +
-            "i.aviso_llegada_en, i.verificado_en " +
+            "i.aviso_llegada_en, i.verificado_en, v.nombre AS verificado_por " +
             "FROM inscripciones i " +
-            "JOIN perfiles_estudiantes p " +
-            "ON p.usuario_id = i.estudiante_id " +
+            "JOIN perfiles_estudiantes p ON p.usuario_id = i.estudiante_id " +
+            "LEFT JOIN perfiles_organizadores v ON v.usuario_id = i.verificado_por_id " +
             "WHERE i.actividad_id = ? " +
             "AND i.estado <> 'CANCELADA' " +
             "ORDER BY i.inscrito_en, i.id";
 
-        return jdbcTemplate.query(
-            sql,
-            (resultado, fila) -> new Participante(
-                resultado.getLong("id"),
-                resultado.getString("nombre"),
-                resultado.getString("carne"),
-                resultado.getString("estado"),
-                resultado.getString("aviso_llegada_en"),
-                resultado.getString("verificado_en")
-            ),
-            actividadId
-        );
+        return jdbcTemplate.query(sql, (resultado, fila) -> new Participante(resultado.getLong("id"), resultado.getString("nombre"), resultado.getString("carne"), resultado.getString("estado"), resultado.getString("aviso_llegada_en"), resultado.getString("verificado_en"), resultado.getString("verificado_por")), actividadId);
     }
 
     // LISTAR HISTORIAL DE CANCELACIONES
@@ -326,16 +315,12 @@ public class InscripcionRepository {
     }
 
     // RF-07.03: VERIFICAR LLEGADA DEL ESTUDIANTE
-    public int verificarLlegada(
-            long inscripcionId,
-            long actividadId,
-            String correoOrganizador,
-            LocalDateTime ahora) {
-
+    public int verificarLlegada(long inscripcionId, long actividadId, String correoOrganizador, LocalDateTime ahora) {
         String sql =
             "UPDATE inscripciones " +
             "SET estado = 'LLEGADA_VERIFICADA', " +
-            "verificado_en = ? " +
+            "verificado_en = ?, " +
+            "verificado_por_id = (SELECT id FROM usuarios WHERE correo = ? AND rol = 'ORGANIZADOR') " +
             "WHERE id = ? " +
             "AND actividad_id = ? " +
             "AND estado = 'LLEGADA_AVISADA' " +
@@ -346,12 +331,6 @@ public class InscripcionRepository {
             "AND u.correo = ? " +
             "AND u.rol = 'ORGANIZADOR')";
 
-        return jdbcTemplate.update(
-            sql,
-            ahora.toString(),
-            inscripcionId,
-            actividadId,
-            correoOrganizador
-        );
+        return jdbcTemplate.update(sql, ahora.toString(), correoOrganizador, inscripcionId, actividadId, correoOrganizador);
     }
 }
