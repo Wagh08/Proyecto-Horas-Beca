@@ -102,6 +102,12 @@ public class ConfiguracionSeguridad {
                     "/actividades/*/avisar-llegada"
                 ).hasRole("ESTUDIANTE")
 
+                // RF-07.03: VERIFICAR LLEGADA
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/inscripciones/*/verificar-llegada"
+                ).hasRole("ORGANIZADOR")
+
                 // DENEGAR RUTAS NO AUTORIZADAS
                 .anyRequest().denyAll()
             )

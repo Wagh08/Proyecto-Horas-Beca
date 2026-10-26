@@ -155,7 +155,6 @@ public class InscripcionService {
             long actividadId,
             String correoEstudiante) {
 
-        // BUSCAR LA ACTIVIDAD
         Actividad actividad = actividadRepository
             .buscarPorId(actividadId)
             .orElseThrow(() ->
@@ -185,7 +184,6 @@ public class InscripcionService {
             );
         }
 
-        // ACTUALIZAR EL ESTADO DE LA INSCRIPCION
         if (inscripcionRepository.avisarLlegada(
                 actividadId,
                 correoEstudiante,
@@ -195,6 +193,54 @@ public class InscripcionService {
             throw new IllegalArgumentException(
                 "No tienes una inscripción pendiente " +
                 "de avisar llegada."
+            );
+        }
+    }
+
+    // RF-07.03: VERIFICAR LLEGADA DEL ESTUDIANTE
+    public void verificarLlegada(
+            long inscripcionId,
+            long actividadId,
+            String correoOrganizador) {
+
+        // COMPROBAR QUE LA ACTIVIDAD PERTENECE AL ORGANIZADOR
+        Actividad actividad = actividadRepository
+            .buscarPropiaPorId(
+                actividadId,
+                correoOrganizador
+            )
+            .orElseThrow(() ->
+                new IllegalArgumentException(
+                    "No organizas esta actividad."
+                )
+            );
+
+        LocalDateTime ahora = LocalDateTime.now(ZONA);
+
+        LocalDateTime inicio = LocalDateTime.of(
+            actividad.fecha(),
+            actividad.horaInicio()
+        );
+
+        // NO VERIFICAR ANTES DEL INICIO
+        if (ahora.isBefore(inicio)) {
+
+            throw new IllegalArgumentException(
+                "La actividad aún no comienza."
+            );
+        }
+
+        // ACTUALIZAR SOLO AVISOS PENDIENTES
+        if (inscripcionRepository.verificarLlegada(
+                inscripcionId,
+                actividadId,
+                correoOrganizador,
+                ahora
+        ) != 1) {
+
+            throw new IllegalArgumentException(
+                "No existe un aviso de llegada pendiente " +
+                "para este estudiante."
             );
         }
     }

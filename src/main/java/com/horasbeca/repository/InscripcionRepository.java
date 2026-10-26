@@ -324,4 +324,34 @@ public class InscripcionRepository {
             hora
         );
     }
+
+    // RF-07.03: VERIFICAR LLEGADA DEL ESTUDIANTE
+    public int verificarLlegada(
+            long inscripcionId,
+            long actividadId,
+            String correoOrganizador,
+            LocalDateTime ahora) {
+
+        String sql =
+            "UPDATE inscripciones " +
+            "SET estado = 'LLEGADA_VERIFICADA', " +
+            "verificado_en = ? " +
+            "WHERE id = ? " +
+            "AND actividad_id = ? " +
+            "AND estado = 'LLEGADA_AVISADA' " +
+            "AND EXISTS (" +
+            "SELECT 1 FROM actividades a " +
+            "JOIN usuarios u ON u.id = a.organizador_id " +
+            "WHERE a.id = inscripciones.actividad_id " +
+            "AND u.correo = ? " +
+            "AND u.rol = 'ORGANIZADOR')";
+
+        return jdbcTemplate.update(
+            sql,
+            ahora.toString(),
+            inscripcionId,
+            actividadId,
+            correoOrganizador
+        );
+    }
 }
