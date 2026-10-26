@@ -1,56 +1,220 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
+
 <body data-rol="estudiante" data-pagina="actividades">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-actividades" id="contenido-pagina">
+    <main class="contenido-app pagina-actividades"
+          id="contenido-pagina">
+
+        <!-- INTRODUCCION -->
         <section class="introduccion">
             <h2>Encuentra una actividad</h2>
-            <p>Consulta las oportunidades disponibles y elige la que mejor se adapte a ti.</p>
+            <p>
+                Consulta las oportunidades disponibles
+                y elige la que mejor se adapte a ti.
+            </p>
         </section>
 
-        <form class="formulario-filtros" th:action="@{/actividades.html}" method="get">
-            <div class="campo"><label for="filtro-fecha">Fecha</label><input id="filtro-fecha" name="fecha" type="date" th:value="${fecha}"></div>
-            <div class="campo"><label for="filtro-turno">Horario de inicio</label><select id="filtro-turno" name="turno"><option value="">Cualquier horario</option><option value="manana" th:selected="${turno == 'manana'}">Mañana, antes de las 12:00</option><option value="tarde" th:selected="${turno == 'tarde'}">Tarde, desde las 12:00</option></select></div>
-            <div class="campo"><label for="filtro-horas">Mínimo de horas beca</label><input id="filtro-horas" name="horasMinimas" type="number" min="1" step="1" th:value="${horasMinimas}" placeholder="Cualquier cantidad"></div>
-            <div class="campo campo-ubicacion">
-                <label for="filtro-ubicacion">Ubicación</label>
-                <input id="filtro-ubicacion" name="ubicacion" type="search" placeholder="Ej. Plaza Paiz" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias-ubicacion" th:value="${ubicacion}">
-                <div id="sugerencias-ubicacion" class="sugerencias-ubicacion" role="listbox" aria-label="Ubicaciones sugeridas" hidden></div>
+        <!-- FORMULARIO DE FILTROS -->
+        <form class="formulario-filtros"
+              th:action="@{/actividades.html}"
+              method="get">
+
+            <div class="campo">
+                <label for="filtro-fecha">Fecha</label>
+
+                <input id="filtro-fecha"
+                       name="fecha"
+                       type="date"
+                       th:value="${fecha}">
             </div>
-            <button class="boton-actividad" type="submit">Aplicar filtros</button>
-            <a class="enlace-actividad" th:href="@{/actividades.html}">Limpiar filtros</a>
-        </form>
-        <p class="mensaje-actividad mensaje-actividad--error" th:if="${errorFiltros}" th:text="${errorFiltros}" role="alert"></p>
 
-        <section class="bloque-actividades" aria-labelledby="titulo-disponibles">
-            <h2 id="titulo-disponibles">Disponibles</h2>
-            <p class="texto-secundario" th:if="${#lists.isEmpty(actividades)}">No hay actividades disponibles por el momento.</p>
-            <article class="tarjeta-actividad" th:each="actividad : ${actividades}">
-                <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca|">Horas beca</span>
-                <h3 th:text="${actividad.nombre}">Nombre de la actividad</h3>
-                <p><time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">Fecha y horario</time></p>
-                <p th:text="${actividad.ubicacion}">Ubicación</p>
-                <p th:text="|Cupo máximo: ${actividad.cupoMaximo}|">Cupo máximo</p>
-                <a class="enlace-actividad" th:href="@{/detalle-actividad.html(id=${actividad.id})}">Ver detalles</a>
+            <div class="campo">
+                <label for="filtro-turno">
+                    Horario de inicio
+                </label>
+
+                <select id="filtro-turno" name="turno">
+
+                    <option value="">
+                        Cualquier horario
+                    </option>
+
+                    <option value="manana"
+                            th:selected="${turno == 'manana'}">
+                        Mañana, antes de las 12:00
+                    </option>
+
+                    <option value="tarde"
+                            th:selected="${turno == 'tarde'}">
+                        Tarde, desde las 12:00
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtro-horas">
+                    Mínimo de horas beca
+                </label>
+
+                <input id="filtro-horas"
+                       name="horasMinimas"
+                       type="number"
+                       min="1"
+                       step="1"
+                       th:value="${horasMinimas}"
+                       placeholder="Cualquier cantidad">
+            </div>
+
+            <div class="campo campo-ubicacion">
+
+                <label for="filtro-ubicacion">
+                    Ubicación
+                </label>
+
+                <input id="filtro-ubicacion"
+                       name="ubicacion"
+                       type="search"
+                       placeholder="Ej. Plaza Paiz"
+                       autocomplete="off"
+                       role="combobox"
+                       aria-autocomplete="list"
+                       aria-expanded="false"
+                       aria-controls="sugerencias-ubicacion"
+                       th:value="${ubicacion}">
+
+                <div id="sugerencias-ubicacion"
+                     class="sugerencias-ubicacion"
+                     role="listbox"
+                     aria-label="Ubicaciones sugeridas"
+                     hidden>
+                </div>
+
+            </div>
+
+            <button class="boton-actividad" type="submit">
+                Aplicar filtros
+            </button>
+
+            <a class="enlace-actividad"
+               th:href="@{/actividades.html}">
+                Limpiar filtros
+            </a>
+
+        </form>
+
+        <!-- ERROR EN FILTROS -->
+        <p class="mensaje-actividad mensaje-actividad--error"
+           th:if="${errorFiltros}"
+           th:text="${errorFiltros}"
+           role="alert">
+        </p>
+
+        <!-- ACTIVIDADES DISPONIBLES -->
+        <section class="bloque-actividades"
+                 aria-labelledby="titulo-disponibles">
+
+            <h2 id="titulo-disponibles">
+                Disponibles
+            </h2>
+
+            <p class="texto-secundario"
+               th:if="${#lists.isEmpty(actividades)}">
+                No hay actividades disponibles por el momento.
+            </p>
+
+            <!-- TARJETA DE CADA ACTIVIDAD -->
+            <article class="tarjeta-actividad"
+                     th:each="actividad : ${actividades}">
+
+                <span class="etiqueta-actividad"
+                      th:text="|${actividad.horasAcreditables} horas beca|">
+                    Horas beca
+                </span>
+
+                <h3 th:text="${actividad.nombre}">
+                    Nombre de la actividad
+                </h3>
+
+                <p>
+                    <time th:datetime="|${actividad.fecha}T${actividad.horaInicio}|"
+                          th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio} a ${actividad.horaFin}|">
+                        Fecha y horario
+                    </time>
+                </p>
+
+                <p th:text="${actividad.ubicacion}">
+                    Ubicación
+                </p>
+
+                <!-- CUPOS DISPONIBLES -->
+                <p th:text="|Cupos disponibles: ${cuposDisponibles[actividad.id]} de ${actividad.cupoMaximo}|">
+                    Cupos disponibles
+                </p>
+
+                <!-- ESTUDIANTE YA INSCRITO -->
+                <p class="etiqueta-actividad"
+                   th:if="${#lists.contains(idsInscritas, actividad.id)}">
+                    Ya estás inscrito
+                </p>
+
+                <!-- CUPOS AGOTADOS -->
+                <p class="texto-secundario"
+                   th:if="${cuposDisponibles[actividad.id] == 0 and !#lists.contains(idsInscritas, actividad.id)}">
+                    Cupos agotados
+                </p>
+
+                <!-- VER DETALLES -->
+                <a class="enlace-actividad"
+                   th:href="@{/detalle-actividad.html(id=${actividad.id})}">
+                    Ver detalles
+                </a>
+
             </article>
+
         </section>
+
     </main>
 
-<nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
-<script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
-<script src="../static/js/ubicaciones.js" th:src="@{/js/ubicaciones.js}"></script>
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
+
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
+    <script src="../static/js/ubicaciones.js"
+            th:src="@{/js/ubicaciones.js}">
+    </script>
+
 </body>
 </html>

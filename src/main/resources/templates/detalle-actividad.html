@@ -1,41 +1,235 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horas Beca</title>
-    <link rel="stylesheet" href="../static/css/tema.css" th:href="@{/css/tema.css}">
-    <link rel="stylesheet" href="../static/css/navegacion.css" th:href="@{/css/navegacion.css}">
-    <link rel="stylesheet" href="../static/css/actividades.css" th:href="@{/css/actividades.css}">
-    <script src="../static/js/tema.js" th:src="@{/js/tema.js}"></script>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Detalle de actividad · Horas Beca</title>
+
+    <link rel="stylesheet"
+          href="../static/css/tema.css"
+          th:href="@{/css/tema.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/navegacion.css"
+          th:href="@{/css/navegacion.css}">
+
+    <link rel="stylesheet"
+          href="../static/css/actividades.css"
+          th:href="@{/css/actividades.css}">
+
+    <script src="../static/js/tema.js"
+            th:src="@{/js/tema.js}"></script>
 </head>
+
 <body data-rol="estudiante" data-pagina="actividades">
+
     <header class="cabecera-app">
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
 
-    <main class="contenido-app pagina-actividades" id="contenido-pagina">
-        <a class="enlace-actividad" href="actividades.html">Volver a actividades</a>
+    <main class="contenido-app pagina-actividades"
+          id="contenido-pagina">
 
+        <!-- VOLVER A ACTIVIDADES -->
+        <a class="enlace-actividad"
+           th:href="@{/actividades.html}">
+            Volver a actividades
+        </a>
+
+        <!-- INFORMACION DE LA ACTIVIDAD -->
         <article class="tarjeta-actividad">
-            <span class="etiqueta-actividad" th:text="|${actividad.horasAcreditables} horas beca|">Horas beca</span>
-            <h2 th:text="${actividad.nombre}">Nombre de la actividad</h2>
-            <p th:text="${actividad.descripcion}">Descripción</p>
+
+            <span class="etiqueta-actividad"
+                  th:text="|${actividad.horasAcreditables} horas beca|">
+                Horas beca
+            </span>
+
+            <h2 th:text="${actividad.nombre}">
+                Nombre de la actividad
+            </h2>
+
+            <p th:text="${actividad.descripcion}">
+                Descripción de la actividad
+            </p>
+
             <dl class="ficha-datos">
-                <div><dt>Fecha</dt><dd th:text="${actividad.fechaTexto()}">Fecha</dd></div>
-                <div><dt>Horario</dt><dd th:text="|${actividad.horaInicio} a ${actividad.horaFin}|">Horario</dd></div>
-                <div><dt>Ubicación</dt><dd th:text="${actividad.ubicacion}">Ubicación</dd></div>
-                <div><dt>Organizador</dt><dd th:text="${actividad.organizador}">Organizador</dd></div>
-                <div><dt>Cupo máximo</dt><dd th:text="${actividad.cupoMaximo}">Cupo</dd></div>
-                <div><dt>Horas acreditables</dt><dd th:text="|${actividad.horasAcreditables} horas beca|">Horas</dd></div>
-                <div><dt>Requisitos</dt><dd th:text="${actividad.requisitos != null ? actividad.requisitos : 'Sin requisitos adicionales'}">Requisitos</dd></div>
+
+                <div>
+                    <dt>Fecha</dt>
+                    <dd th:text="${actividad.fechaTexto()}">
+                        Fecha
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Horario</dt>
+                    <dd th:text="|${actividad.horaInicio} a ${actividad.horaFin}|">
+                        Horario
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Ubicación</dt>
+                    <dd th:text="${actividad.ubicacion}">
+                        Ubicación
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Organizador</dt>
+                    <dd th:text="${actividad.organizador}">
+                        Organizador
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Cupo máximo</dt>
+                    <dd th:text="${actividad.cupoMaximo}">
+                        Cupo
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Cupos disponibles</dt>
+                    <dd th:text="${cuposDisponibles}">
+                        Cupos disponibles
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Horas acreditables</dt>
+                    <dd th:text="|${actividad.horasAcreditables} horas beca|">
+                        Horas
+                    </dd>
+                </div>
+
+                <div>
+                    <dt>Requisitos</dt>
+                    <dd th:text="${actividad.requisitos != null ? actividad.requisitos : 'Sin requisitos adicionales'}">
+                        Requisitos
+                    </dd>
+                </div>
+
             </dl>
+
         </article>
+
+        <!-- MENSAJE DE INSCRIPCION EXITOSA -->
+        <p class="mensaje-actividad mensaje-actividad--exito"
+           th:if="${param.inscrita}"
+           role="status">
+            Tu inscripción quedó confirmada.
+        </p>
+
+        <!-- MENSAJE DE ERROR DE INSCRIPCION -->
+        <p class="mensaje-actividad mensaje-actividad--error"
+           th:if="${param.errorInscripcion}"
+           role="alert">
+            No fue posible inscribirte.
+            Revisa si aún hay cupos y si la actividad
+            no ha comenzado.
+        </p>
+
+        <!-- ESTADO DE INSCRIPCION -->
+        <p class="etiqueta-actividad"
+           th:if="${inscripcion != null and inscripcion.estado != 'CANCELADA'}">
+            Ya estás inscrito en esta actividad.
+        </p>
+
+        <!-- FORMULARIO PARA INSCRIBIRSE -->
+        <form
+            th:if="${noHaComenzado and (inscripcion == null or inscripcion.estado == 'CANCELADA') and cuposDisponibles > 0}"
+            th:action="@{/actividades/{id}/inscribir(id=${actividad.id})}"
+            method="post">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <button class="boton-actividad"
+                    type="submit">
+                Inscribirme
+            </button>
+
+        </form>
+
+        <!-- MENSAJE DE CUPOS AGOTADOS -->
+        <p class="texto-secundario"
+           th:if="${noHaComenzado and cuposDisponibles == 0 and (inscripcion == null or inscripcion.estado == 'CANCELADA')}">
+            Cupos agotados.
+        </p>
+
+        <!-- MENSAJE DE CANCELACION EXITOSA -->
+        <p class="mensaje-actividad mensaje-actividad--exito"
+           th:if="${param.cancelada}"
+           role="status">
+            Cancelaste tu inscripción;
+            el cupo volvió a estar disponible.
+        </p>
+
+        <!-- MENSAJE DE ERROR DE CANCELACION -->
+        <p class="mensaje-actividad mensaje-actividad--error"
+           th:if="${param.errorCancelacion}"
+           role="alert">
+            No se pudo cancelar.
+            Comprueba que la actividad no haya comenzado
+            y, si falta una hora o menos,
+            escribe una justificación.
+        </p>
+
+        <!-- FORMULARIO PARA CANCELAR INSCRIPCION -->
+        <form
+            th:if="${noHaComenzado and inscripcion != null and inscripcion.estado == 'INSCRITA'}"
+            th:action="@{/actividades/{id}/cancelar(id=${actividad.id})}"
+            method="post"
+            class="formulario-actividad">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}">
+
+            <div class="campo">
+
+                <label for="motivo-cancelacion">
+                    Justificación de la cancelación
+                </label>
+
+                <textarea
+                    id="motivo-cancelacion"
+                    name="motivo"
+                    maxlength="500"
+                    placeholder="Obligatoria si falta una hora o menos"></textarea>
+
+            </div>
+
+            <button class="boton-actividad"
+                    type="submit">
+                Cancelar mi inscripción
+            </button>
+
+        </form>
+
+        <!-- ACTIVIDAD YA INICIADA -->
+        <p class="texto-secundario"
+           th:if="${!noHaComenzado and inscripcion != null and inscripcion.estado != 'CANCELADA'}">
+            Esta actividad ya comenzó.
+            Tu inscripción permanece registrada.
+        </p>
+
     </main>
 
-    <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+    <nav class="navegacion-inferior"
+         aria-label="Navegación principal">
+    </nav>
 
-    <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
+    <script src="../static/js/navegacion.js"
+            th:src="@{/js/navegacion.js}">
+    </script>
+
 </body>
 </html>
