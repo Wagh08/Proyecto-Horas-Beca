@@ -149,7 +149,14 @@ public class ActividadRepository {
         ).stream().findFirst();
     }
 
-    
+    public Optional<Actividad> buscarPorId(long id) {
+    return jdbcTemplate.query(
+        CONSULTA + " WHERE a.id = ?",
+        this::mapear,
+        id
+    ).stream().findFirst();
+}
+
     private Actividad mapear(ResultSet resultado, int fila)
             throws SQLException {
 

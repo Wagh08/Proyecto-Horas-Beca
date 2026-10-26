@@ -45,6 +45,10 @@ public class ConfiguracionSeguridad {
                 .requestMatchers(HttpMethod.POST, "/perfil-organizador/contacto").hasRole("ORGANIZADOR")
                 .requestMatchers(HttpMethod.POST, "/actividades/publicar").hasRole("ORGANIZADOR")
                 .requestMatchers(HttpMethod.GET, "/api/ubicaciones").hasRole("ESTUDIANTE")
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/actividades/*/inscribir"
+                ).hasRole("ESTUDIANTE")
                 .anyRequest().denyAll()
         
             )
