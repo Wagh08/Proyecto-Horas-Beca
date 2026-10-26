@@ -25,7 +25,6 @@ public class PantallasController {
         "inicio-organizador",
         "crear-actividad",
         "solicitudes",
-        "escanear-qr",
         "perfil-organizador"
     );
 

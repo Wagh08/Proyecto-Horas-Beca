@@ -56,6 +56,12 @@
                 Fecha y horario
             </p>
 
+            <!-- RF08.02: ABRIR LECTOR QR -->
+            <a class="accion-asistencia"
+               th:href="@{/escanear-qr.html(id=${actividad.id})}">
+                Abrir lector QR de esta actividad
+            </a>
+
             <!-- MENSAJE DE VERIFICACION EXITOSA -->
             <p class="mensaje-actividad mensaje-actividad--exito"
                th:if="${param.verificada}"
@@ -107,7 +113,7 @@
                     Llegada verificada
                 </span>
 
-                <!-- RF-07.03: BOTON VERIFICAR LLEGADA -->
+                <!-- RF07.03: VERIFICAR LLEGADA -->
                 <form
                     th:if="${participante.estado == 'LLEGADA_AVISADA'}"
                     th:action="@{/inscripciones/{id}/verificar-llegada(id=${participante.id})}"
@@ -136,6 +142,7 @@
 
     </main>
 
+    <!-- NAVEGACION INFERIOR -->
     <nav class="navegacion-inferior"
          aria-label="Navegación principal">
     </nav>

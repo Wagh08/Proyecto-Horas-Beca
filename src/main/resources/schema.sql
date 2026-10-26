@@ -60,10 +60,8 @@ CREATE TABLE IF NOT EXISTS inscripciones (
     aviso_llegada_en TEXT,
     verificado_en TEXT,
     UNIQUE (actividad_id, estudiante_id),
-    FOREIGN KEY (actividad_id)
-        REFERENCES actividades(id),
-    FOREIGN KEY (estudiante_id)
-        REFERENCES perfiles_estudiantes(usuario_id)
+    FOREIGN KEY (actividad_id) REFERENCES actividades(id),
+    FOREIGN KEY (estudiante_id) REFERENCES perfiles_estudiantes(usuario_id)
 );
 
 CREATE TABLE IF NOT EXISTS historial_cancelaciones (
@@ -71,27 +69,27 @@ CREATE TABLE IF NOT EXISTS historial_cancelaciones (
     inscripcion_id INTEGER NOT NULL,
     cancelado_en TEXT NOT NULL,
     motivo TEXT,
-    tardia INTEGER NOT NULL
-        CHECK (tardia IN (0, 1)),
-    FOREIGN KEY (inscripcion_id)
-        REFERENCES inscripciones(id)
+    tardia INTEGER NOT NULL CHECK (tardia IN (0, 1)),
+    FOREIGN KEY (inscripcion_id) REFERENCES inscripciones(id)
 );
 
-CREATE INDEX IF NOT EXISTS
-    idx_inscripciones_actividad_estado
+CREATE INDEX IF NOT EXISTS idx_inscripciones_actividad_estado
 ON inscripciones(actividad_id, estado);
 
-CREATE INDEX IF NOT EXISTS
-    idx_historial_cancelaciones_inscripcion
+CREATE INDEX IF NOT EXISTS idx_historial_cancelaciones_inscripcion
 ON historial_cancelaciones(inscripcion_id);
-
-
--- RF08.01: GENERACIÓN DE CÓDIGOS QR
 
 CREATE TABLE IF NOT EXISTS codigos_qr (
     inscripcion_id INTEGER PRIMARY KEY,
     token TEXT NOT NULL UNIQUE,
     creado_en TEXT NOT NULL,
-    FOREIGN KEY (inscripcion_id)
-        REFERENCES inscripciones(id)
+    FOREIGN KEY (inscripcion_id) REFERENCES inscripciones(id)
+);
+
+CREATE TABLE IF NOT EXISTS acreditaciones (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    inscripcion_id INTEGER NOT NULL UNIQUE,
+    horas_acreditadas INTEGER NOT NULL CHECK (horas_acreditadas > 0),
+    acreditado_en TEXT NOT NULL,
+    FOREIGN KEY (inscripcion_id) REFERENCES inscripciones(id)
 );
