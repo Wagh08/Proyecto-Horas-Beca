@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -20,37 +19,57 @@
     <main class="contenido-app inicio" id="contenido-pagina">
         <section class="saludo">
             <h2 th:text="|Hola, ${resumen.nombre()}|">Hola</h2>
-            <p>Encuentra tu próxima oportunidad de horas beca.</p>
+            <p>Estas son tus horas y tus próximas oportunidades.</p>
         </section>
 
         <section class="resumen-inicio" aria-labelledby="titulo-horas">
             <p id="titulo-horas" th:text="|Tus horas beca en ${resumen.anio()}|">Tus horas beca este año</p>
-
             <p class="cifra" th:text="|${resumen.acreditadas()} de ${resumen.meta()} horas|">Horas acreditadas</p>
-
             <p class="detalle" th:text="${resumen.pendientes() > 0 ? 'Te faltan ' + resumen.pendientes() + ' horas para completar tu meta.' : 'Ya completaste tu meta anual.'}">Horas pendientes</p>
-
             <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.acreditadas() > resumen.meta() ? resumen.meta() : resumen.acreditadas()}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
                 <span th:style="|--avance: ${resumen.anchoBarra()}%;|"></span>
             </div>
-
             <p th:text="|${resumen.porcentaje()} % completado|">Progreso</p>
-
-            <a th:href="@{/progreso.html}">Ver mi progreso</a>
+            <a th:href="@{/progreso.html}">Ver progreso e historial</a>
         </section>
 
-        <section class="seccion-inicio" aria-labelledby="titulo-actividades">
-            <h2 id="titulo-actividades">Actividades</h2>
+        <section class="seccion-inicio" aria-labelledby="titulo-inscritas">
+            <div class="encabezado-seccion">
+                <h2 id="titulo-inscritas">Mis próximas actividades</h2>
+                <a th:href="@{/actividades.html}">Ver todas</a>
+            </div>
 
-            <article class="tarjeta-inicio">
-                <p>Consulta las actividades disponibles y tus inscripciones.</p>
-                <a th:href="@{/actividades.html}">Ver actividades</a>
+            <p class="mensaje-inicio-vacio" th:if="${inicio.inscritas().isEmpty()}">Aún no tienes actividades próximas. Explora las oportunidades disponibles y anótate en alguna.</p>
+
+            <article class="tarjeta-inicio tarjeta-inicio--destacada" th:each="actividad : ${inicio.inscritas()}">
+                <span class="etiqueta">Ya estás inscrito</span>
+                <h3 th:text="${actividad.nombre()}">Actividad</h3>
+                <p><time th:datetime="|${actividad.fecha()}T${actividad.horaInicio()}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio()} a ${actividad.horaFin()}|">Fecha y horario</time></p>
+                <p th:text="${actividad.ubicacion()}">Ubicación</p>
+                <a class="boton-inicio" th:href="@{/detalle-actividad.html(id=${actividad.id()})}">Ver detalles y asistencia</a>
+            </article>
+        </section>
+
+        <section class="seccion-inicio" aria-labelledby="titulo-oportunidades">
+            <div class="encabezado-seccion">
+                <h2 id="titulo-oportunidades">Oportunidades con cupo</h2>
+                <a th:href="@{/actividades.html}">Explorar</a>
+            </div>
+
+            <p class="mensaje-inicio-vacio" th:if="${inicio.oportunidades().isEmpty()}">Por ahora no hay actividades con cupo disponibles. Puedes revisar de nuevo más tarde.</p>
+
+            <article class="tarjeta-inicio" th:each="actividad : ${inicio.oportunidades()}">
+                <span class="etiqueta" th:text="|${actividad.horasAcreditables()} horas beca|">Horas beca</span>
+                <h3 th:text="${actividad.nombre()}">Actividad</h3>
+                <p><time th:datetime="|${actividad.fecha()}T${actividad.horaInicio()}|" th:text="|${actividad.fechaTexto()} · ${actividad.horaInicio()} a ${actividad.horaFin()}|">Fecha y horario</time></p>
+                <p th:text="${actividad.ubicacion()}">Ubicación</p>
+                <p th:text="|${inicio.cupos().get(actividad.id())} cupos disponibles|">Cupos disponibles</p>
+                <a class="boton-inicio" th:href="@{/detalle-actividad.html(id=${actividad.id()})}">Ver actividad</a>
             </article>
         </section>
     </main>
 
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
-
     <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
 </body>
 </html>
