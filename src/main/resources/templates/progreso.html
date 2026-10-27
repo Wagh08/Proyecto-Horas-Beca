@@ -15,12 +15,13 @@
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
+
     <main class="contenido-app pagina-progreso" id="contenido-pagina">
         <section class="tarjeta-progreso" aria-labelledby="titulo-progreso">
             <h2 id="titulo-progreso" th:text="|Tu progreso en ${resumen.anio()}|">Tu progreso</h2>
             <p class="total" th:text="|${resumen.acreditadas()} de ${resumen.meta()} horas|">Horas acreditadas</p>
             <p th:text="|Has completado el ${resumen.porcentaje()} % de tu meta anual.|">Porcentaje completado</p>
-            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.anchoBarra() * resumen.meta() / 100}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
+            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.acreditadas() > resumen.meta() ? resumen.meta() : resumen.acreditadas()}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
                 <span th:style="|--avance: ${resumen.anchoBarra()}%;|"></span>
             </div>
         </section>
@@ -31,8 +32,17 @@
         </section>
 
         <section class="historial" aria-labelledby="titulo-historial">
-            <h2 id="titulo-historial" th:text="|Acreditaciones de ${resumen.anio()}|">Acreditaciones</h2>
-            <p th:if="${#lists.isEmpty(historial)}">Todavía no tienes horas acreditadas este año.</p>
+            <h2 id="titulo-historial" th:text="|Acreditaciones de ${anioHistorial}|">Acreditaciones</h2>
+
+            <form class="selector-anio" th:action="@{/progreso.html}" method="get">
+                <label for="anio-historial">Año del historial</label>
+                <select id="anio-historial" name="anio">
+                    <option th:each="anio : ${aniosHistorial}" th:value="${anio}" th:text="${anio}" th:selected="${anio == anioHistorial}">Año</option>
+                </select>
+                <button type="submit">Consultar</button>
+            </form>
+
+            <p th:if="${#lists.isEmpty(historial)}" th:text="|Todavía no tienes horas acreditadas en ${anioHistorial}.|">Sin acreditaciones</p>
 
             <article class="registro-historial" th:each="registro : ${historial}">
                 <h3 th:text="${registro.actividad()}">Actividad</h3>
@@ -41,6 +51,7 @@
             </article>
         </section>
     </main>
+
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
     <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
 </body>
