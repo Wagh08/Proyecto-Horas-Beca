@@ -28,15 +28,19 @@ public class ResumenHorasService {
     }
 
     public Resumen calcular(String correoEstudiante) {
+        return calcularParaAnio(correoEstudiante, LocalDate.now(ZONA).getYear());
+    }
+
+    public Resumen calcularParaAnio(String correoEstudiante, int anio) {
         PerfilEstudiante perfil = perfilRepository.buscarEstudiantePorCorreo(correoEstudiante)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfil de estudiante no encontrado"));
 
-        int anio = LocalDate.now(ZONA).getYear();
         int meta = metaAnualService.calcularHorasRequeridas(perfil.porcentajeBeca());
         int acreditadas = acreditacionRepository.totalAnual(correoEstudiante, anio);
         int pendientes = Math.max(0, meta - acreditadas);
         int porcentaje = (int) Math.round(acreditadas * 100.0 / meta);
+        int anchoBarra = Math.min(100, porcentaje);
 
-        return new Resumen(anio, perfil.nombre(), meta, acreditadas, pendientes, porcentaje, Math.min(100, porcentaje));
+        return new Resumen(anio, perfil.nombre(), meta, acreditadas, pendientes, porcentaje, anchoBarra);
     }
 }

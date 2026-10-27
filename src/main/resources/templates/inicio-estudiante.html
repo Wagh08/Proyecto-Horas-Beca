@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -15,6 +16,7 @@
         <p>Horas Beca</p>
         <h1 id="titulo-pagina"></h1>
     </header>
+
     <main class="contenido-app inicio" id="contenido-pagina">
         <section class="saludo">
             <h2 th:text="|Hola, ${resumen.nombre()}|">Hola</h2>
@@ -23,24 +25,32 @@
 
         <section class="resumen-inicio" aria-labelledby="titulo-horas">
             <p id="titulo-horas" th:text="|Tus horas beca en ${resumen.anio()}|">Tus horas beca este año</p>
+
             <p class="cifra" th:text="|${resumen.acreditadas()} de ${resumen.meta()} horas|">Horas acreditadas</p>
-            <p class="detalle" th:text="|Te faltan ${resumen.pendientes()} horas para completar tu meta.|">Horas pendientes</p>
-            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.anchoBarra() * resumen.meta() / 100}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
+
+            <p class="detalle" th:text="${resumen.pendientes() > 0 ? 'Te faltan ' + resumen.pendientes() + ' horas para completar tu meta.' : 'Ya completaste tu meta anual.'}">Horas pendientes</p>
+
+            <div class="barra-horas" role="progressbar" aria-label="Horas beca acreditadas" aria-valuemin="0" th:aria-valuemax="${resumen.meta()}" th:aria-valuenow="${resumen.acreditadas() > resumen.meta() ? resumen.meta() : resumen.acreditadas()}" th:aria-valuetext="|${resumen.acreditadas()} de ${resumen.meta()} horas acreditadas|">
                 <span th:style="|--avance: ${resumen.anchoBarra()}%;|"></span>
             </div>
+
             <p th:text="|${resumen.porcentaje()} % completado|">Progreso</p>
+
             <a th:href="@{/progreso.html}">Ver mi progreso</a>
         </section>
 
         <section class="seccion-inicio" aria-labelledby="titulo-actividades">
             <h2 id="titulo-actividades">Actividades</h2>
+
             <article class="tarjeta-inicio">
                 <p>Consulta las actividades disponibles y tus inscripciones.</p>
                 <a th:href="@{/actividades.html}">Ver actividades</a>
             </article>
         </section>
     </main>
+
     <nav class="navegacion-inferior" aria-label="Navegación principal"></nav>
+
     <script src="../static/js/navegacion.js" th:src="@{/js/navegacion.js}"></script>
 </body>
 </html>

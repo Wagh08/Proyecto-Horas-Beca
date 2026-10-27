@@ -1,6 +1,7 @@
 
 package com.horasbeca.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
@@ -9,12 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.horasbeca.model.PerfilEstudiante;
 import com.horasbeca.repository.PerfilRepository;
-import com.horasbeca.service.MetaAnualService;
 import com.horasbeca.repository.AcreditacionRepository;
+import com.horasbeca.service.MetaAnualService;
 import com.horasbeca.service.ResumenHorasService;
 
 @Controller
@@ -22,7 +24,6 @@ public class PantallasController {
 
     private static final Set<String> PAGINAS = Set.of(
         "inicio-estudiante",
-        "progreso",
         "perfil-estudiante",
         "inicio-organizador",
         "crear-actividad",
@@ -35,14 +36,19 @@ public class PantallasController {
     private final AcreditacionRepository acreditacionRepository;
     private final ResumenHorasService resumenHorasService;
 
-    public PantallasController(PerfilRepository perfilRepository, MetaAnualService metaAnualService, AcreditacionRepository acreditacionRepository, ResumenHorasService resumenHorasService) {
+    public PantallasController(
+            PerfilRepository perfilRepository,
+            MetaAnualService metaAnualService,
+            AcreditacionRepository acreditacionRepository,
+            ResumenHorasService resumenHorasService) {
+
         this.perfilRepository = perfilRepository;
         this.metaAnualService = metaAnualService;
         this.acreditacionRepository = acreditacionRepository;
         this.resumenHorasService = resumenHorasService;
     }
 
-    // REDIRIGIR SEGUN EL ROL DEL USUARIO
+    
     @GetMapping("/")
     public String inicio(Authentication autenticacion) {
 
@@ -57,7 +63,7 @@ public class PantallasController {
             : "redirect:/inicio-estudiante.html";
     }
 
-    // MOSTRAR PAGINAS GENERALES
+    
     @GetMapping("/{pagina}.html")
     public String mostrarPagina(
             @PathVariable("pagina") String pagina,
@@ -70,16 +76,15 @@ public class PantallasController {
             );
         }
 
-        if (pagina.equals("inicio-estudiante") || pagina.equals("progreso")) {
-            ResumenHorasService.Resumen resumen = resumenHorasService.calcular(autenticacion.getName());
-            modelo.addAttribute("resumen", resumen);
-
-            if (pagina.equals("progreso")) {
-                modelo.addAttribute("historial", acreditacionRepository.listarAnuales(autenticacion.getName(), resumen.anio()));
-            }
+        
+        if (pagina.equals("inicio-estudiante")) {
+            modelo.addAttribute(
+                "resumen",
+                resumenHorasService.calcular(autenticacion.getName())
+            );
         }
 
-        // PERFIL DEL ESTUDIANTE
+        
         if (pagina.equals("perfil-estudiante")) {
 
             PerfilEstudiante perfil = perfilRepository
@@ -101,7 +106,7 @@ public class PantallasController {
             );
         }
 
-        // PERFIL DEL ORGANIZADOR
+        
         if (pagina.equals("perfil-organizador")) {
 
             modelo.addAttribute(
@@ -122,7 +127,52 @@ public class PantallasController {
         return pagina;
     }
 
-    // PAGINA DE INICIO DE SESION
+    
+    @GetMapping("/progreso.html")
+    public String progreso(
+            @RequestParam(name = "anio", required = false) Integer anio,
+            Authentication autenticacion,
+            Model modelo) {
+
+        String correo = autenticacion.getName();
+
+        
+        ResumenHorasService.Resumen resumen =
+            resumenHorasService.calcular(correo);
+
+       
+        List<Integer> anios =
+            acreditacionRepository.listarAnios(correo, resumen.anio());
+
+       
+        int anioSeleccionado =
+            anio == null ? resumen.anio() : anio;
+
+       
+        if (!anios.contains(anioSeleccionado)) {
+            throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Año del historial no disponible"
+            );
+        }
+
+        
+        modelo.addAttribute("resumen", resumen);
+        modelo.addAttribute("aniosHistorial", anios);
+        modelo.addAttribute("anioHistorial", anioSeleccionado);
+
+        modelo.addAttribute(
+            "historial",
+            acreditacionRepository.listarAnuales(
+                correo,
+                anioSeleccionado
+            )
+        );
+
+        return "progreso";
+    }
+
+    
     @GetMapping("/login")
     public String login() {
         return "login";
