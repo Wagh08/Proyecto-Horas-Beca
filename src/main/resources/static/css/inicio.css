@@ -111,3 +111,68 @@
     font-size: 0.85rem;
     line-height: 1.4;
 }
+
+.encabezado-seccion {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.encabezado-seccion h2 {
+    min-width: 0;
+}
+
+.encabezado-seccion a {
+    flex: none;
+    color: var(--color-principal);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
+
+.tarjeta-inicio--destacada {
+    border-left: 4px solid var(--color-principal);
+}
+
+.tarjeta-inicio h3 {
+    overflow-wrap: anywhere;
+}
+
+.tarjeta-inicio .etiqueta {
+    margin-bottom: 4px;
+}
+
+.mensaje-inicio-vacio {
+    padding: 18px;
+    border: 1px dashed var(--color-borde);
+    border-radius: var(--radio-tarjeta);
+    background: var(--color-superficie);
+    line-height: 1.5;
+}
+
+.tarjeta-inicio .boton-inicio,
+.boton-inicio--principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 11px 16px;
+    border-radius: var(--radio-control);
+    background: var(--color-principal);
+    color: var(--color-sobre-principal);
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+.boton-inicio--principal {
+    width: 100%;
+}
+
+.tarjeta-inicio .boton-inicio:focus-visible,
+.boton-inicio--principal:focus-visible,
+.encabezado-seccion a:focus-visible {
+    outline: 2px solid var(--color-principal);
+    outline-offset: 3px;
+}

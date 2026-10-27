@@ -69,6 +69,11 @@ public class InscripcionRepository {
         return cantidad == null ? 0 : cantidad;
     }
 
+    public int contarLlegadasPendientes(long actividadId) {
+        Integer cantidad = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM inscripciones WHERE actividad_id = ? AND estado = 'LLEGADA_AVISADA'", Integer.class, actividadId);
+        return cantidad == null ? 0 : cantidad;
+    }
+
     // INSCRIBIR ESTUDIANTE
     public int inscribir(
             long actividadId,
