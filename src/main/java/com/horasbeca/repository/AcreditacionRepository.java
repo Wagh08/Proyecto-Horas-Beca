@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import java.util.ArrayList;
 
 @Repository
 public class AcreditacionRepository {
@@ -69,5 +70,25 @@ public class AcreditacionRepository {
             resultado.getString("acreditado_en"),
             resultado.getInt("horas_acreditadas")
         ), correoEstudiante, anio + "-01-01", (anio + 1) + "-01-01");
+    }
+    public List<Integer> listarAnios(String correoEstudiante, int anioActual) {
+        String sql = "SELECT DISTINCT CAST(SUBSTR(ac.acreditado_en, 1, 4) AS INTEGER) AS anio "
+            + "FROM acreditaciones ac "
+            + "JOIN inscripciones i ON i.id = ac.inscripcion_id "
+            + "JOIN usuarios u ON u.id = i.estudiante_id "
+            + "WHERE u.correo = ? AND u.rol = 'ESTUDIANTE' "
+            + "AND ac.acreditado_en < ? "
+            + "ORDER BY anio DESC";
+
+        List<Integer> anios = new ArrayList<>();
+        anios.add(anioActual);
+
+        for (Integer anio : jdbcTemplate.queryForList(sql, Integer.class, correoEstudiante, (anioActual + 1) + "-01-01")) {
+            if (!anio.equals(anioActual)) {
+                anios.add(anio);
+            }
+        }
+
+        return anios;
     }
 }
